@@ -12,12 +12,17 @@ public class MazeDriver {
         
         RouteFinder rf = new RouteFinder(maze);
         String outChars = "";
+        List<Tile> route = rf.getRoute();
+        System.out.print(maze.getTileLocation(route.get(route.size() - 1)).toString());
+        outChars += route.get(route.size() - 1).toString();
         while(!rf.step()) {
-            List<Tile> route = rf.getRoute();
+            route = rf.getRoute();
             System.out.print(maze.getTileLocation(route.get(route.size() - 1)).toString());
             outChars += route.get(route.size() - 1).toString();
         }
-        System.out.println("\nhere"+outChars);
+        System.out.print(maze.getTileLocation(route.get(route.size() - 1)).toString());
+        outChars += route.get(route.size() - 1).toString();
+        System.out.println("\n"+outChars);
         
     }
 }
