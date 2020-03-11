@@ -1,13 +1,15 @@
 #BlueJ class context
 comment0.target=Tile
-comment1.params=type
-comment1.target=Tile(Type)
-comment2.params=c
-comment2.target=Tile\ fromChar(char)
+comment1.params=type\ coordinate
+comment1.target=Tile(Type,\ Coordinate)
+comment2.params=c\ x\ y
+comment2.target=Tile\ fromChar(char,\ int,\ int)
 comment3.params=
-comment3.target=Type\ getType()
+comment3.target=Coordinate\ getCoords()
 comment4.params=
-comment4.target=boolean\ isNavigable()
+comment4.target=Type\ getType()
 comment5.params=
-comment5.target=java.lang.String\ toString()
-numComments=6
+comment5.target=boolean\ isNavigable()
+comment6.params=
+comment6.target=java.lang.String\ toString()
+numComments=7

@@ -4,18 +4,24 @@ import java.util.*;
 public class Tile {
     
     private Type type;
+    private Coordinate coordinate;
     
-    public Tile(Type type) {
+    public Tile(Type type, Coordinate coordinate) {
         this.type = type;
+        this.coordinate = coordinate;
     }
     
-    protected static Tile fromChar(char c) {
+    protected static Tile fromChar(char c, int x, int y) {
         HashMap<Character, Type> types = new HashMap<Character, Type>();
         types.put('.', Type.CORRIDOR);
         types.put('e', Type.ENTRANCE);
         types.put('x', Type.EXIT);
         types.put('#', Type.WALL);
-        return new Tile(types.get(c));
+        return new Tile(types.get(c), new Coordinate(x, y));
+    }
+    
+    public Coordinate getCoords() {
+        return this.coordinate;
     }
     
     public Type getType() {
