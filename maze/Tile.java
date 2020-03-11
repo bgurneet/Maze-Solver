@@ -2,57 +2,51 @@ package maze;
 import java.util.*;
 
 public class Tile {
-    
+
     private Type type;
-    private Coordinate coordinate;
-    
-    public Tile(Type type, Coordinate coordinate) {
+
+    public Tile(Type type) {
         this.type = type;
-        this.coordinate = coordinate;
     }
-    
-    protected static Tile fromChar(char c, int x, int y) {
+
+    protected static Tile fromChar(char c) {
         HashMap<Character, Type> types = new HashMap<Character, Type>();
         types.put('.', Type.CORRIDOR);
         types.put('e', Type.ENTRANCE);
         types.put('x', Type.EXIT);
         types.put('#', Type.WALL);
-        return new Tile(types.get(c), new Coordinate(x, y));
+        return new Tile(types.get(c));
     }
-    
-    public Coordinate getCoords() {
-        return this.coordinate;
-    }
-    
+
     public Type getType() {
         return this.type;
     }
-    
+
     public boolean isNavigable() {
         if(this.type == Type.WALL)
             return false;
         else
             return true;
     }
-    
+
     public String toString() {
         String output = "";
 
         switch(this.type) {
             case CORRIDOR:
-                output = ".";
-                break;
+            output = ".";
+            break;
             case ENTRANCE:
-                output = "e";
-                break;
+            output = "e";
+            break;
             case EXIT:
-                output = "x";
-                break;
+            output = "x";
+            break;
             case WALL:
-                output = "#";
-                break;
+            output = "#";
+            break;
             default:
-                output = "";
+            output = "";
         }
         return output;
     }

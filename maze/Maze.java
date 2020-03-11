@@ -18,23 +18,18 @@ public class Maze {
             FileReader fr = new FileReader("maze-test.txt");
             int i;
             List<Tile> currentRow = new ArrayList<Tile>();
-            int row = 0;
-            int column = 0;
             while((i=fr.read()) != -1) {
                 char character = (char) i;
                 if(character == '\n') {
                     maze.tiles.add(currentRow);
                     currentRow = new ArrayList<Tile>();
-                    row = 0;
-                    column += 1;
                 } else {
-                    Tile tile = Tile.fromChar(character, row, column);
+                    Tile tile = Tile.fromChar(character);
                     if(character == 'e')
                         maze.setEntrance(tile);
                     if(character == 'x')
                         maze.setExit(tile);
                     currentRow.add(tile);
-                    row += 1;
                 }
             }
             if(currentRow.size() > 0)
@@ -47,7 +42,7 @@ public class Maze {
     }
     
     public Tile getAdjacentTile(Tile tile, Direction direction) {
-        Coordinate coords = tile.getCoords();
+        Coordinate coords = getTileLocation(tile);
         Tile adjacentTile;
         switch(direction) {
             case NORTH:
@@ -81,7 +76,20 @@ public class Maze {
     }
     
     public Coordinate getTileLocation(Tile tile) {
-        return null; // change this
+        int row, col = 0;
+        boolean found = false;
+        for(row=0;row<tiles.size();row++) {
+            for(col=0;col<tiles.get(0).size();col++) {
+                if(tiles.get(row).get(col).equals(tile)) {
+                    found = true;
+                    break;
+                }
+            }
+            if(found)
+                break;
+        }
+        
+        return new Coordinate(col, row);
     }
     
     public List<List<Tile>> getTiles() {
