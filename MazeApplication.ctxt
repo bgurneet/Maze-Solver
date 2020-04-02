@@ -2,7 +2,12 @@
 comment0.target=MazeApplication
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
-comment2.params=event
-comment2.target=void\ buttonClick(javafx.event.ActionEvent)
-comment2.text=\n\ This\ will\ be\ executed\ when\ the\ button\ is\ clicked\n\ It\ increments\ the\ count\ by\ 1\n
-numComments=3
+comment2.params=
+comment2.target=void\ LoadMapMIClicked()
+comment3.params=filename
+comment3.target=void\ LoadMap(java.lang.String)
+comment4.params=c
+comment4.target=javafx.scene.paint.Color\ getColour(char)
+comment5.params=
+comment5.target=void\ StepButtonPressed()
+numComments=6

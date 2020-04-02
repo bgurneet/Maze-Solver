@@ -15,7 +15,7 @@ public class Maze {
     public static Maze fromTxt(String filename) {
         Maze maze = new Maze();
         try {
-            FileReader fr = new FileReader("maze-test.txt");
+            FileReader fr = new FileReader(filename);
             int i;
             List<Tile> currentRow = new ArrayList<Tile>();
             while((i=fr.read()) != -1) {
@@ -108,7 +108,7 @@ public class Maze {
         String output = "";
         for(List<Tile> row: tiles) {
             for(Tile tile: row) {
-                output += tile.toString() + " ";
+                output += tile.toString();
             }
             output += "\n";
         }

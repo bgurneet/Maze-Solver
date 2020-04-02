@@ -2,21 +2,38 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
 import java.net.URL;
 import javafx.scene.*;
+import javafx.fxml.FXML;
+import maze.*;
+import java.io.*;
+import maze.routing.*;
+import java.util.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 
 public class MazeApplication extends Application
 {
-    // We keep track of the count, and label displaying the count:
-    private int count = 0;
-    private Label myLabel = new Label("0");
+    @FXML
+    Button StepButton;
+
+    @FXML
+    Pane canvas;
+
+    @FXML
+    MenuItem LoadMapMI;
+
+    public List<List<Rectangle>> blocks;
+    public RouteFinder rf;
+    public Maze maze;
 
     @Override
     public void start(Stage stage) throws Exception
@@ -24,20 +41,78 @@ public class MazeApplication extends Application
 
         Parent root = FXMLLoader.load(getClass().getResource("BasicApplication_css.fxml"));
         Scene scene = new Scene(root);
+
         scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
 
     }
 
-    /**
-     * This will be executed when the button is clicked
-     * It increments the count by 1
-     */
-    private void buttonClick(ActionEvent event)
-    {
-        // Counts number of button clicks and shows the result on a label
-        count = count + 1;
-        myLabel.setText(Integer.toString(count));
+    public void LoadMapMIClicked() {
+        Stage stage = (Stage) StepButton.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("./"));
+        fileChooser.setTitle("Open Maze Path");
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null) {
+            LoadMap(file.getAbsolutePath());
+        }
     }
+
+    public void LoadMap(String filename) {
+        canvas.getChildren().clear();
+        blocks = new ArrayList<List<Rectangle>>();
+        maze = Maze.fromTxt(filename);
+        rf = new RouteFinder(maze);
+        String[] mazeStr = maze.toString().split("\n");
+        int BlockHeight = 25;
+        int BlockWidth = 50;
+        for(int row=0;row<mazeStr.length;row++) {
+            List<Rectangle> currentRow = new ArrayList<Rectangle>();
+            //System.out.println(mazeStr[row]);
+            for(int col=0;col<mazeStr[row].length();col++) {
+                System.out.print(mazeStr[row].charAt(col));
+                Color colour = getColour(mazeStr[row].charAt(col));
+                Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
+                rectangle.relocate(col*BlockWidth, row*BlockHeight);
+                currentRow.add(rectangle);
+                canvas.getChildren().addAll(rectangle);
+            }
+            System.out.println();
+            blocks.add(currentRow);
+        }
+    }
+
+    public Color getColour(char c) {
+        HashMap<Character, Color> colours = new HashMap<Character, Color>();
+        colours.put('.', Color.SNOW);
+        colours.put('e', Color.GREEN);
+        colours.put('x', Color.RED);
+        colours.put('#', Color.PERU);
+
+        return colours.get(c);
+    }
+
+    public void StepButtonPressed() {
+        int BlockHeight = 25;
+        int BlockWidth = 50;
+        String[] mazeStr = maze.toString().split("\n");
+        if(rf != null && !rf.step()) {
+            List<Tile> route = rf.getRoute();
+            for(List<Tile> row: maze.getTiles()) {
+                for(Tile tile: row) {
+                    Coordinate coords = maze.getTileLocation(tile);
+                    Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
+                    if(route.contains(tile)) {
+                        if(block.getFill() != Color.DARKTURQUOISE) {
+                            block.setFill(Color.DARKTURQUOISE);
+                        }
+                    } else if(block.getFill() == Color.DARKTURQUOISE){
+                        block.setFill(getColour(tile.toString().charAt(0)));
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -32,6 +32,7 @@ public class RouteFinder {
     }
 
     public static RouteFinder load(String filename) {
+        
         return null; // change this
     }
 
@@ -67,6 +68,8 @@ public class RouteFinder {
             }
 
             this.finished = nextTile == null? false : nextTile.toString().equals("x");
+        } else if(!traversedTiles.contains(this.maze.getExit())) {
+            traversedTiles.add(this.maze.getExit());
         }
         return this.finished;
     }

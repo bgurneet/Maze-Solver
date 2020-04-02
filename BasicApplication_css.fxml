@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -8,14 +12,14 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MazeApplication">
+<VBox prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MazeApplication">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
             <Menu mnemonicParsing="false" text="Actions">
               <items>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                <MenuItem mnemonicParsing="false" text="Load Map" />
+                <MenuItem fx:id="LoadMapMI" mnemonicParsing="false" onAction="#LoadMapMIClicked" text="Load Map" />
                   <MenuItem mnemonicParsing="false" text="Load Route" />
                   <MenuItem mnemonicParsing="false" text="Save Route" />
               </items>
@@ -29,13 +33,17 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1200.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button layoutX="297.0" layoutY="14.0" mnemonicParsing="false" text="Step" />
+            <Button fx:id="StepButton" layoutX="277.0" layoutY="14.0" mnemonicParsing="false" onAction="#StepButtonPressed" onMousePressed="#StepButtonPressed" text="Step" />
+            <Pane fx:id="canvas" layoutX="-1.0" layoutY="41.0" prefHeight="442.0" prefWidth="600.0" />
          </children>
     </AnchorPane>
   </children>
   <stylesheets>
     <URL value="@BasicApplication.css" />
   </stylesheets>
+   <effect>
+      <Glow />
+   </effect>
 </VBox>
