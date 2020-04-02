@@ -8,16 +8,17 @@ public class Maze {
     private Tile exit;
     private List<List<Tile>> tiles;
     
-    public Maze() {
+    private Maze() {
         this.tiles = new ArrayList<List<Tile>>();
     }
     
-    public static Maze fromTxt(String filename) {
+    public static Maze fromTxt(String filename) throws InvalidMazeException {
         Maze maze = new Maze();
         try {
             FileReader fr = new FileReader(filename);
             int i;
             List<Tile> currentRow = new ArrayList<Tile>();
+            boolean mazeValid = true;
             while((i=fr.read()) != -1) {
                 char character = (char) i;
                 if(character == '\n') {
@@ -25,10 +26,20 @@ public class Maze {
                     currentRow = new ArrayList<Tile>();
                 } else {
                     Tile tile = Tile.fromChar(character);
-                    if(character == 'e')
-                        maze.setEntrance(tile);
-                    if(character == 'x')
-                        maze.setExit(tile);
+                    if(character == 'e') {
+                        if(maze.getEntrance() == null) {
+                            maze.setEntrance(tile);
+                        } else {
+                            throw new MultipleEntranceException("Multiple entrances found in Maze!");
+                        }
+                    }
+                    if(character == 'x') {
+                        if(maze.getExit() == null) {
+                            maze.setExit(tile);
+                        } else {
+                            throw new MultipleExitException("Multiple exits found in Maze!");
+                        }
+                    }
                     currentRow.add(tile);
                 }
             }
@@ -36,6 +47,14 @@ public class Maze {
                 maze.tiles.add(currentRow);
         } catch(Exception e) {
             e.printStackTrace();
+        }
+        
+        if(!(maze.tiles.stream().allMatch(l -> l.size() == maze.tiles.get(0).size()))) {
+            throw new RaggedMazeException("Number of tiles in each row do not match! ");
+        } else if(maze.getEntrance() == null) {
+            throw new NoEntranceException("No Entrance found in Maze!");
+        } else if(maze.getExit() == null) {
+            throw new NoExitException("No Exit found in Maze!");
         }
         
         return maze;

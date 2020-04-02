@@ -19,6 +19,7 @@ import java.util.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.scene.control.Alert.*;
 
 public class MazeApplication extends Application
 {
@@ -60,26 +61,33 @@ public class MazeApplication extends Application
     }
 
     public void LoadMap(String filename) {
-        canvas.getChildren().clear();
-        blocks = new ArrayList<List<Rectangle>>();
-        maze = Maze.fromTxt(filename);
-        rf = new RouteFinder(maze);
-        String[] mazeStr = maze.toString().split("\n");
-        int BlockHeight = 25;
-        int BlockWidth = 50;
-        for(int row=0;row<mazeStr.length;row++) {
-            List<Rectangle> currentRow = new ArrayList<Rectangle>();
-            //System.out.println(mazeStr[row]);
-            for(int col=0;col<mazeStr[row].length();col++) {
-                System.out.print(mazeStr[row].charAt(col));
-                Color colour = getColour(mazeStr[row].charAt(col));
-                Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
-                rectangle.relocate(col*BlockWidth, row*BlockHeight);
-                currentRow.add(rectangle);
-                canvas.getChildren().addAll(rectangle);
+        try {
+            canvas.getChildren().clear();
+            blocks = new ArrayList<List<Rectangle>>();
+            maze = Maze.fromTxt(filename);
+            rf = new RouteFinder(maze);
+            String[] mazeStr = maze.toString().split("\n");
+            int BlockHeight = 25;
+            int BlockWidth = 50;
+            for(int row=0;row<mazeStr.length;row++) {
+                List<Rectangle> currentRow = new ArrayList<Rectangle>();
+                for(int col=0;col<mazeStr[row].length();col++) {
+                    Color colour = getColour(mazeStr[row].charAt(col));
+                    Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
+                    rectangle.relocate(col*BlockWidth, row*BlockHeight);
+                    currentRow.add(rectangle);
+                    canvas.getChildren().addAll(rectangle);
+                }
+                System.out.println();
+                blocks.add(currentRow);
             }
-            System.out.println();
-            blocks.add(currentRow);
+        } catch(InvalidMazeException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+            alert.setContentText(ex.getMessage());
+            
+            alert.showAndWait();
         }
     }
 
