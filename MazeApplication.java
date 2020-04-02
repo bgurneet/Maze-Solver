@@ -105,21 +105,30 @@ public class MazeApplication extends Application
         int BlockHeight = 25;
         int BlockWidth = 50;
         String[] mazeStr = maze.toString().split("\n");
-        if(rf != null && !rf.step()) {
-            List<Tile> route = rf.getRoute();
-            for(List<Tile> row: maze.getTiles()) {
-                for(Tile tile: row) {
-                    Coordinate coords = maze.getTileLocation(tile);
-                    Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
-                    if(route.contains(tile)) {
-                        if(block.getFill() != Color.DARKTURQUOISE) {
-                            block.setFill(Color.DARKTURQUOISE);
+        try {
+            if(rf != null && !rf.step()) {
+                List<Tile> route = rf.getRoute();
+                for(List<Tile> row: maze.getTiles()) {
+                    for(Tile tile: row) {
+                        Coordinate coords = maze.getTileLocation(tile);
+                        Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
+                        if(route.contains(tile)) {
+                            if(block.getFill() != Color.DARKTURQUOISE) {
+                                block.setFill(Color.DARKTURQUOISE);
+                            }
+                        } else if(block.getFill() == Color.DARKTURQUOISE){
+                            block.setFill(getColour(tile.toString().charAt(0)));
                         }
-                    } else if(block.getFill() == Color.DARKTURQUOISE){
-                        block.setFill(getColour(tile.toString().charAt(0)));
                     }
                 }
             }
+        } catch(NoRouteFoundException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+            alert.setContentText(ex.getMessage());
+            
+            alert.showAndWait();
         }
     }
 
