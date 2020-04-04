@@ -1,8 +1,9 @@
 package maze.routing;
 import maze.*;
 import java.util.*;
+import java.io.*;
 
-public class RouteFinder {
+public class RouteFinder implements java.io.Serializable{
 
     private Maze maze;
     private Stack<Tile> route;

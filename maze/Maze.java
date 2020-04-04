@@ -2,7 +2,7 @@ package maze;
 import java.util.*;
 import java.io.*;
 
-public class Maze {
+public class Maze implements java.io.Serializable{
     
     private Tile entrance;
     private Tile exit;

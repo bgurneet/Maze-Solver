@@ -20,8 +20,8 @@
               <items>
                   <SeparatorMenuItem mnemonicParsing="false" />
                 <MenuItem fx:id="LoadMapMI" mnemonicParsing="false" onAction="#LoadMapMIClicked" text="Load Map" />
-                  <MenuItem mnemonicParsing="false" text="Load Route" />
-                  <MenuItem mnemonicParsing="false" text="Save Route" />
+                  <MenuItem fx:id="LoadRouteMI" mnemonicParsing="false" onAction="#LoadRouteMIClicked" text="Load Route" />
+                  <MenuItem fx:id="SaveRouteMI" mnemonicParsing="false" onAction="#SaveRouteMIClicked" text="Save Route" />
               </items>
             </Menu>
         <Menu mnemonicParsing="false" text="Help">
