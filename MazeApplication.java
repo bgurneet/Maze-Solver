@@ -183,31 +183,41 @@ public class MazeApplication extends Application
     }
 
     public void StepButtonPressed() {
-        int BlockHeight = 25;
-        int BlockWidth = 50;
-        String[] mazeStr = maze.toString().split("\n");
-        try {
-            if(rf != null && !rf.step()) {
-                List<Tile> route = rf.getRoute();
-                for(List<Tile> row: maze.getTiles()) {
-                    for(Tile tile: row) {
-                        Coordinate coords = maze.getTileLocation(tile);
-                        Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
-                        if(route.contains(tile)) {
-                            if(block.getFill() != Color.DARKTURQUOISE) {
-                                block.setFill(Color.DARKTURQUOISE);
+        if(maze != null) {
+            int BlockHeight = 25;
+            int BlockWidth = 50;
+            String[] mazeStr = maze.toString().split("\n");
+            try {
+                //finished
+                if(rf != null && !rf.step()) {
+                    List<Tile> route = rf.getRoute();
+                    for(List<Tile> row: maze.getTiles()) {
+                        for(Tile tile: row) {
+                            Coordinate coords = maze.getTileLocation(tile);
+                            Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
+                            if(route.contains(tile)) {
+                                if(block.getFill() != Color.DARKTURQUOISE) {
+                                    block.setFill(Color.DARKTURQUOISE);
+                                }
+                            } else if(block.getFill() == Color.DARKTURQUOISE){
+                                block.setFill(getColour(tile.toString().charAt(0)));
                             }
-                        } else if(block.getFill() == Color.DARKTURQUOISE){
-                            block.setFill(getColour(tile.toString().charAt(0)));
                         }
                     }
                 }
+            } catch(NoRouteFoundException ex) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+                alert.setContentText(ex.getMessage());
+
+                alert.showAndWait();
             }
-        } catch(NoRouteFoundException ex) {
+        } else {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
-            alert.setContentText(ex.getMessage());
+            alert.setHeaderText("No Maze Found!");
+            alert.setContentText("You need to load a Maze before you can try stepping through its route.");
 
             alert.showAndWait();
         }

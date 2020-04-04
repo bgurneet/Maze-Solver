@@ -4,7 +4,7 @@ import maze.routing.*;
 import java.util.*;
 
 public class MazeDriver {
-    public static void main(String [] args) {
+    /*public static void main(String [] args) {
         
         Maze maze = Maze.fromTxt("../maze-test.txt");
         System.out.println(maze.toString());
@@ -24,5 +24,5 @@ public class MazeDriver {
         outChars += route.get(route.size() - 1).toString();
         System.out.println("\n"+outChars);
         
-    }
+    }*/
 }
