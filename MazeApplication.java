@@ -40,7 +40,6 @@ public class MazeApplication extends Application
 
     public List<List<Rectangle>> blocks;
     public RouteFinder rf;
-    public Maze maze;
 
     @Override
     public void start(Stage stage) throws Exception
@@ -65,7 +64,10 @@ public class MazeApplication extends Application
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
             //LoadMap(file.getAbsolutePath());
-            try {
+            rf = RouteFinder.load(file.getAbsolutePath());
+            System.out.println("Loading: "+rf.getMaze().toString());
+            renderMaze();
+            /*try {
                 FileInputStream fileIn = new FileInputStream(file.getAbsolutePath());
                 ObjectInputStream objIn = new ObjectInputStream(fileIn);
                 Object[] data = (Object[]) objIn.readObject();
@@ -76,7 +78,7 @@ public class MazeApplication extends Application
                 ex.printStackTrace();
             } catch(ClassNotFoundException ex) {
                 ex.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -97,8 +99,9 @@ public class MazeApplication extends Application
             fileChooser.setTitle("Save RouteFinder State");
             File file = fileChooser.showSaveDialog(stage);
             if(file != null) {
-                try {
-                    Object[] data = {rf, maze};
+                rf.save(file.getAbsolutePath());
+                /*try {
+                    Object[] data = {rf, rf.getMaze()};
                     FileOutputStream fileOut = new FileOutputStream(file.getAbsolutePath());
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
                     out.writeObject(data);
@@ -106,7 +109,7 @@ public class MazeApplication extends Application
                     fileOut.close();
                 } catch(IOException ex) {
                     System.out.println(ex);
-                }
+                }*/
             }
         }
     }
@@ -126,7 +129,7 @@ public class MazeApplication extends Application
 
     public void LoadMap(String filename) {
         try {
-            maze = Maze.fromTxt(filename);
+            Maze maze = Maze.fromTxt(filename);
             rf = new RouteFinder(maze);
             renderMaze();
         } catch(InvalidMazeException ex) {
@@ -142,6 +145,7 @@ public class MazeApplication extends Application
     public void renderMaze() {
         blocks = new ArrayList<List<Rectangle>>();
         canvas.getChildren().clear();
+        Maze maze = rf.getMaze();
         String[] mazeStr = maze.toString().split("\n");
         int BlockHeight = 25;
         int BlockWidth = 50;
@@ -183,6 +187,7 @@ public class MazeApplication extends Application
     }
 
     public void StepButtonPressed() {
+        Maze maze = rf.getMaze();
         if(maze != null) {
             int BlockHeight = 25;
             int BlockWidth = 50;

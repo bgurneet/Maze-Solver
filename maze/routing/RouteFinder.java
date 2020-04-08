@@ -33,11 +33,30 @@ public class RouteFinder implements java.io.Serializable{
     }
 
     public static RouteFinder load(String filename) {
-        
-        return null; // change this
+        RouteFinder rf = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(filename);
+            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            rf = (RouteFinder) objIn.readObject();
+        } catch(IOException ex){
+            ex.printStackTrace();
+        } catch(ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return rf;
     }
 
     public void save(String filename) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            System.out.println("Saving: "+this.maze.toString());
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
     }
 
     public boolean step() throws NoRouteFoundException{
@@ -45,12 +64,12 @@ public class RouteFinder implements java.io.Serializable{
             if(route.size() > 0) {
                 Tile currentTile = route.peek();
                 Tile nextTile;
-    
+
                 Tile northTile = maze.getAdjacentTile(currentTile, Direction.NORTH);
                 Tile southTile = maze.getAdjacentTile(currentTile, Direction.SOUTH);
                 Tile westTile = maze.getAdjacentTile(currentTile, Direction.WEST);
                 Tile eastTile = maze.getAdjacentTile(currentTile, Direction.EAST);
-    
+
                 if(northTile != null && northTile.isNavigable() && !traversedTiles.contains(northTile))
                     nextTile = northTile;
                 else if(westTile != null && westTile.isNavigable() && !traversedTiles.contains(westTile))
@@ -61,14 +80,14 @@ public class RouteFinder implements java.io.Serializable{
                     nextTile = southTile;
                 else
                     nextTile = null;
-    
+
                 if(nextTile != null) {
                     traversedTiles.add(nextTile);
                     route.push(nextTile);
                 } else {
                     route.pop();
                 }
-    
+
                 this.finished = nextTile == null? false : nextTile.toString().equals("x");
             } else {
                 throw new NoRouteFoundException("No route found in this maze!");
