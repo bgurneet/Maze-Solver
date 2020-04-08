@@ -3,6 +3,32 @@ import java.util.*;
 import java.io.*;
 
 public class Maze implements java.io.Serializable{
+
+    public enum Direction
+    {
+        NORTH, SOUTH, EAST, WEST;
+    }
+
+    public class Coordinate {
+        private int x, y;
+        
+        public Coordinate(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+        
+        public int getX() {
+            return this.x;
+        }
+        
+        public int getY() {
+            return this.y;
+        }
+        
+        public String toString() {
+            return "("+this.x+", "+this.y+")";
+        }
+    }
     
     private Tile entrance;
     private Tile exit;

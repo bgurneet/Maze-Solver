@@ -2,7 +2,13 @@ package maze;
 import java.util.*;
 import java.io.*;
 
+
 public class Tile implements java.io.Serializable{
+
+    public enum Type
+    {
+        CORRIDOR, ENTRANCE, EXIT, WALL;
+    }
 
     private Type type;
 
