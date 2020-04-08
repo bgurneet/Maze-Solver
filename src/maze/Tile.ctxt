@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Tile
+comment1.params=type
+comment1.target=Tile(Type)
+comment2.params=c
+comment2.target=Tile\ fromChar(char)
+comment3.params=
+comment3.target=Type\ getType()
+comment4.params=
+comment4.target=boolean\ isNavigable()
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6

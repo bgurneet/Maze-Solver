@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=NoExitException
+comment1.params=errorMessage
+comment1.target=NoExitException(java.lang.String)
+numComments=2

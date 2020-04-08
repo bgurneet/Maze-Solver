@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Maze
+comment1.params=
+comment1.target=Maze()
+comment10.params=tile
+comment10.target=void\ setExit(Tile)
+comment11.params=
+comment11.target=java.lang.String\ toString()
+comment2.params=filename
+comment2.target=Maze\ fromTxt(java.lang.String)
+comment3.params=tile\ direction
+comment3.target=Tile\ getAdjacentTile(Tile,\ Direction)
+comment4.params=
+comment4.target=Tile\ getEntrance()
+comment5.params=
+comment5.target=Tile\ getExit()
+comment6.params=coord
+comment6.target=Tile\ getTileAtLocation(Coordinate)
+comment7.params=tile
+comment7.target=Coordinate\ getTileLocation(Tile)
+comment8.params=
+comment8.target=java.util.List\ getTiles()
+comment9.params=tile
+comment9.target=void\ setEntrance(Tile)
+numComments=12
