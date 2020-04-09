@@ -48,7 +48,6 @@ public class Maze implements java.io.Serializable{
             maze.tiles.add(new ArrayList<Tile>());
             while((i=fr.read()) != -1) {
                 char character = (char) i;
-                System.out.println(character);
                 if(!(character=='e' || character=='x' || character=='#' || character=='.' || character=='\n')) {
                     throw new InvalidMazeException("Maze file contains invalid character!");
                 }
@@ -173,9 +172,6 @@ public class Maze implements java.io.Serializable{
 
     private void setExit(Tile tile) throws MultipleExitException, IllegalAccessException {
         if(getTileLocation(tile) == null){
-            throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
-        }
-        else if(tile == null) {
             throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
         }
         else if(this.getExit() == null) {
