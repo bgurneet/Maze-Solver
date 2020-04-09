@@ -2,7 +2,7 @@ find . -name "*.class" -type f -delete
 
 javac -d ./bin tests/ModifierChecker.java
 #isStatic=$(java -cp bin tests/ModifierChecker)
-isStatic="false";
+isStatic="true";
 
 javac -d ./bin -cp .:junit-platform-console-standalone.jar ./tests/*/CoordinateTest.java
 javac -d ./bin -cp .:junit-platform-console-standalone.jar ./tests/*/DirectionTest.java

@@ -1,3 +1,5 @@
+
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -141,7 +143,7 @@ public class MazeApplication extends Application
         List<Tile> route = rf.getRoute();
         for(List<Tile> row: maze.getTiles()) {
             for(Tile tile: row) {
-                Coordinate coords = maze.getTileLocation(tile);
+                Maze.Coordinate coords = maze.getTileLocation(tile);
                 Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
                 if(route.contains(tile)) {
                     if(block.getFill() != Color.DARKTURQUOISE) {
@@ -176,7 +178,7 @@ public class MazeApplication extends Application
                     List<Tile> route = rf.getRoute();
                     for(List<Tile> row: maze.getTiles()) {
                         for(Tile tile: row) {
-                            Coordinate coords = maze.getTileLocation(tile);
+                            Maze.Coordinate coords = maze.getTileLocation(tile);
                             Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
                             if(route.contains(tile)) {
                                 if(block.getFill() != Color.DARKTURQUOISE) {

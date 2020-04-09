@@ -1,4 +1,5 @@
 package maze.routing;
+
 import maze.*;
 import java.util.*;
 import java.io.*;
@@ -65,10 +66,10 @@ public class RouteFinder implements java.io.Serializable{
                 Tile currentTile = route.peek();
                 Tile nextTile;
 
-                Tile northTile = maze.getAdjacentTile(currentTile, Direction.NORTH);
-                Tile southTile = maze.getAdjacentTile(currentTile, Direction.SOUTH);
-                Tile westTile = maze.getAdjacentTile(currentTile, Direction.WEST);
-                Tile eastTile = maze.getAdjacentTile(currentTile, Direction.EAST);
+                Tile northTile = maze.getAdjacentTile(currentTile, Maze.Direction.NORTH);
+                Tile southTile = maze.getAdjacentTile(currentTile, Maze.Direction.SOUTH);
+                Tile westTile = maze.getAdjacentTile(currentTile, Maze.Direction.WEST);
+                Tile eastTile = maze.getAdjacentTile(currentTile, Maze.Direction.EAST);
 
                 if(northTile != null && northTile.isNavigable() && !traversedTiles.contains(northTile))
                     nextTile = northTile;

@@ -9,7 +9,7 @@ public class Maze implements java.io.Serializable{
         NORTH, SOUTH, EAST, WEST;
     }
 
-    public class Coordinate {
+    public static class Coordinate {
         private int x, y;
         
         public Coordinate(int x, int y) {
@@ -47,23 +47,26 @@ public class Maze implements java.io.Serializable{
             boolean mazeValid = true;
             while((i=fr.read()) != -1) {
                 char character = (char) i;
+                if(!(character=='e' || character=='x' || character=='#' || character=='.' || character=='\n')) {
+                    throw new InvalidMazeException("Maze file contains invalid character!");
+                }
                 if(character == '\n') {
                     maze.tiles.add(currentRow);
                     currentRow = new ArrayList<Tile>();
                 } else {
                     Tile tile = Tile.fromChar(character);
                     if(character == 'e') {
-                        if(maze.getEntrance() == null) {
+                        try {
                             maze.setEntrance(tile);
-                        } else {
-                            throw new MultipleEntranceException("Multiple entrances found in Maze!");
+                        } catch(MultipleEntranceException ex) {
+                            ex.printStackTrace();
                         }
                     }
                     if(character == 'x') {
-                        if(maze.getExit() == null) {
+                        try {
                             maze.setExit(tile);
-                        } else {
-                            throw new MultipleExitException("Multiple exits found in Maze!");
+                        } catch(MultipleExitException ex) {
+                            ex.printStackTrace();
                         }
                     }
                     currentRow.add(tile);
@@ -134,19 +137,32 @@ public class Maze implements java.io.Serializable{
                 break;
         }
         
-        return new Coordinate(col, row);
+        return found ? new Coordinate(col, row) : null;
     }
     
     public List<List<Tile>> getTiles() {
         return tiles;
     }
     
-    private void setEntrance(Tile tile) {
-        this.entrance = tile;
+    private void setEntrance(Tile tile) throws MultipleEntranceException, IllegalAccessException {
+        if(tile == null) {
+            throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
+        }
+        else if(this.getEntrance() == null) {
+            this.entrance = tile;
+        } else if(getTileLocation(tile) == null){
+            throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
+        } else {
+            throw new MultipleEntranceException("Multiple entrances found in Maze!");
+        }
     }
     
-    private void setExit(Tile tile) {
-        this.exit = tile;
+    private void setExit(Tile tile) throws MultipleExitException {
+        if(this.getExit() == null) {
+            this.exit = tile;
+        } else {
+            throw new MultipleExitException("Multiple exits found in Maze!");
+        }
     }
     
     public String toString() {

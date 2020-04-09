@@ -1,4 +1,6 @@
 
+
+
 import maze.*;
 import java.io.*;
 import maze.routing.*;
