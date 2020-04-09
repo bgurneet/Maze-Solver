@@ -47,7 +47,7 @@ public class RouteFinder implements java.io.Serializable{
         return rf;
     }
 
-    public void save(String filename) {
+    public void save(String filename) throws IOException {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -56,7 +56,7 @@ public class RouteFinder implements java.io.Serializable{
             out.close();
             fileOut.close();
         } catch(IOException ex) {
-            System.out.println(ex);
+            throw new IOException(ex);
         }
     }
 

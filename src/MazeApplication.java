@@ -58,9 +58,9 @@ public class MazeApplication extends Application
 
     public void LoadRouteMIClicked() {
         Stage stage = (Stage) StepButton.getScene().getWindow();
-        FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
+        //FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(ext);
+        //fileChooser.getExtensionFilters().add(ext);
         fileChooser.setInitialDirectory(new File("./"));
         fileChooser.setTitle("Open Maze Route");
         File file = fileChooser.showOpenDialog(stage);
@@ -82,14 +82,23 @@ public class MazeApplication extends Application
             alert.showAndWait();
         } else {
             Stage stage = (Stage) StepButton.getScene().getWindow();
-            FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
+            //FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
             FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(ext);
+            //fileChooser.getExtensionFilters().add(ext);
             fileChooser.setInitialDirectory(new File("./"));
             fileChooser.setTitle("Save RouteFinder State");
             File file = fileChooser.showSaveDialog(stage);
             if(file != null) {
-                rf.save(file.getAbsolutePath());
+                try {
+                    rf.save(file.getAbsolutePath());
+                } catch(IOException ex) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+                    alert.setContentText(ex.getMessage());
+        
+                    alert.showAndWait();
+                }
             }
         }
     }
