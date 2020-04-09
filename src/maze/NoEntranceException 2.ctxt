@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=NoEntranceException
+comment1.params=errorMessage
+comment1.target=NoEntranceException(java.lang.String)
+numComments=2

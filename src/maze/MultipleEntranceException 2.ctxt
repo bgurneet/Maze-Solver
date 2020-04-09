@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=MultipleEntranceException
+comment1.params=errorMessage
+comment1.target=MultipleEntranceException(java.lang.String)
+numComments=2

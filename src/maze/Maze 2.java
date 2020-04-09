@@ -3,32 +3,6 @@ import java.util.*;
 import java.io.*;
 
 public class Maze implements java.io.Serializable{
-
-    public enum Direction
-    {
-        NORTH, SOUTH, EAST, WEST;
-    }
-
-    public static class Coordinate {
-        private int x, y;
-        
-        public Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-        
-        public int getX() {
-            return this.x;
-        }
-        
-        public int getY() {
-            return this.y;
-        }
-        
-        public String toString() {
-            return "("+this.x+", "+this.y+")";
-        }
-    }
     
     private Tile entrance;
     private Tile exit;
@@ -47,26 +21,23 @@ public class Maze implements java.io.Serializable{
             boolean mazeValid = true;
             while((i=fr.read()) != -1) {
                 char character = (char) i;
-                if(!(character=='e' || character=='x' || character=='#' || character=='.' || character=='\n')) {
-                    throw new InvalidMazeException("Maze file contains invalid character!");
-                }
                 if(character == '\n') {
                     maze.tiles.add(currentRow);
                     currentRow = new ArrayList<Tile>();
                 } else {
                     Tile tile = Tile.fromChar(character);
                     if(character == 'e') {
-                        try {
+                        if(maze.getEntrance() == null) {
                             maze.setEntrance(tile);
-                        } catch(MultipleEntranceException ex) {
-                            ex.printStackTrace();
+                        } else {
+                            throw new MultipleEntranceException("Multiple entrances found in Maze!");
                         }
                     }
                     if(character == 'x') {
-                        try {
+                        if(maze.getExit() == null) {
                             maze.setExit(tile);
-                        } catch(MultipleExitException ex) {
-                            ex.printStackTrace();
+                        } else {
+                            throw new MultipleExitException("Multiple exits found in Maze!");
                         }
                     }
                     currentRow.add(tile);
@@ -94,16 +65,16 @@ public class Maze implements java.io.Serializable{
         Tile adjacentTile;
         switch(direction) {
             case NORTH:
-                adjacentTile = coords.getY() < tiles.size() - 1? getTileAtLocation(new Coordinate(coords.getX(), coords.getY()+1)) : null;
+                adjacentTile = coords.getY() > 0? tiles.get(coords.getY() - 1).get(coords.getX()) : null;
                 break;
             case SOUTH:
-                adjacentTile = coords.getY() > 0? getTileAtLocation(new Coordinate(coords.getX(), coords.getY()-1)) : null;
+                adjacentTile = coords.getY() < tiles.size() - 1? tiles.get(coords.getY() + 1).get(coords.getX()) : null;
                 break;
             case EAST:
-                adjacentTile = coords.getX() < tiles.get(0).size() - 1? getTileAtLocation(new Coordinate(coords.getX()+1, coords.getY())) : null;
+                adjacentTile = coords.getX() < tiles.get(0).size() - 1? tiles.get(coords.getY()).get(coords.getX() + 1) : null;
                 break;
             case WEST:
-                adjacentTile = coords.getX() > 0? getTileAtLocation(new Coordinate(coords.getX()-1, coords.getY())): null;
+                adjacentTile = coords.getX() > 0? tiles.get(coords.getY()).get(coords.getX() - 1) : null;
                 break;
             default:
                 adjacentTile = null;
@@ -120,10 +91,7 @@ public class Maze implements java.io.Serializable{
     }
     
     public Tile getTileAtLocation(Coordinate coord) {
-        // (0, 0) is the bottom-left of the maze
-        int numOfRows = tiles.size() - 1;
-        int coordY = numOfRows - coord.getY();
-        return tiles.get(coordY).get(coord.getX());
+        return tiles.get(coord.getY()).get(coord.getX()); // check later if this is correct or not
     }
     
     public Coordinate getTileLocation(Tile tile) {
@@ -139,36 +107,20 @@ public class Maze implements java.io.Serializable{
             if(found)
                 break;
         }
-
-        int numOfRows = tiles.size() - 1;
-        row = numOfRows - row;
         
-        return found ? new Coordinate(col, row) : null;
+        return new Coordinate(col, row);
     }
     
     public List<List<Tile>> getTiles() {
         return tiles;
     }
     
-    private void setEntrance(Tile tile) throws MultipleEntranceException, IllegalAccessException {
-        if(tile == null) {
-            throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
-        }
-        else if(this.getEntrance() == null) {
-            this.entrance = tile;
-        } else if(getTileLocation(tile) == null){
-            throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
-        } else {
-            throw new MultipleEntranceException("Multiple entrances found in Maze!");
-        }
+    private void setEntrance(Tile tile) {
+        this.entrance = tile;
     }
     
-    private void setExit(Tile tile) throws MultipleExitException {
-        if(this.getExit() == null) {
-            this.exit = tile;
-        } else {
-            throw new MultipleExitException("Multiple exits found in Maze!");
-        }
+    private void setExit(Tile tile) {
+        this.exit = tile;
     }
     
     public String toString() {

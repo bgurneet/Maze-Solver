@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=RouteFinder
 comment1.params=maze
-comment1.target=RouteFinder(src.maze.Maze)
+comment1.target=RouteFinder(maze.Maze)
 comment2.params=
-comment2.target=src.maze.Maze\ getMaze()
+comment2.target=maze.Maze\ getMaze()
 comment3.params=
 comment3.target=java.util.List\ getRoute()
 comment4.params=

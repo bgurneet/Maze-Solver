@@ -144,7 +144,9 @@ public class MazeApplication extends Application
         for(List<Tile> row: maze.getTiles()) {
             for(Tile tile: row) {
                 Maze.Coordinate coords = maze.getTileLocation(tile);
-                Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
+                int numOfRows = maze.getTiles().size() - 1;
+                int coordY = numOfRows - coords.getY();
+                Rectangle block = blocks.get(coordY).get(coords.getX()); 
                 if(route.contains(tile)) {
                     if(block.getFill() != Color.DARKTURQUOISE) {
                         block.setFill(Color.DARKTURQUOISE);
@@ -172,15 +174,18 @@ public class MazeApplication extends Application
             int BlockHeight = 25;
             int BlockWidth = 50;
             String[] mazeStr = maze.toString().split("\n");
-            try {
+            /*try {*/
                 //finished
                 if(rf != null && !rf.step()) {
                     List<Tile> route = rf.getRoute();
                     for(List<Tile> row: maze.getTiles()) {
                         for(Tile tile: row) {
                             Maze.Coordinate coords = maze.getTileLocation(tile);
-                            Rectangle block = blocks.get(coords.getY()).get(coords.getX()); 
+                            int numOfRows = maze.getTiles().size() - 1;
+                            int coordY = (coords.getY() - numOfRows) * -1;
+                            Rectangle block = blocks.get(coordY).get(coords.getX()); 
                             if(route.contains(tile)) {
+                                System.out.println("Original: "+tile.toString()+": " + coords.getX()+" "+coords.getY());
                                 if(block.getFill() != Color.DARKTURQUOISE) {
                                     block.setFill(Color.DARKTURQUOISE);
                                 }
@@ -190,14 +195,14 @@ public class MazeApplication extends Application
                         }
                     }
                 }
-            } catch(NoRouteFoundException ex) {
+            /*} catch(NoRouteFoundException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
                 alert.setContentText(ex.getMessage());
 
                 alert.showAndWait();
-            }
+            }*/
         } else {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");

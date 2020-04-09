@@ -1,4 +1,4 @@
-package maze;
+package Maze;
 import java.util.*;
 import java.io.*;
 
@@ -94,16 +94,16 @@ public class Maze implements java.io.Serializable{
         Tile adjacentTile;
         switch(direction) {
             case NORTH:
-                adjacentTile = coords.getY() < tiles.size() - 1? getTileAtLocation(new Coordinate(coords.getX(), coords.getY()+1)) : null;
+                adjacentTile = coords.getY() > 0? tiles.get(coords.getY() - 1).get(coords.getX()) : null;
                 break;
             case SOUTH:
-                adjacentTile = coords.getY() > 0? getTileAtLocation(new Coordinate(coords.getX(), coords.getY()-1)) : null;
+                adjacentTile = coords.getY() < tiles.size() - 1? tiles.get(coords.getY() + 1).get(coords.getX()) : null;
                 break;
             case EAST:
-                adjacentTile = coords.getX() < tiles.get(0).size() - 1? getTileAtLocation(new Coordinate(coords.getX()+1, coords.getY())) : null;
+                adjacentTile = coords.getX() < tiles.get(0).size() - 1? tiles.get(coords.getY()).get(coords.getX() + 1) : null;
                 break;
             case WEST:
-                adjacentTile = coords.getX() > 0? getTileAtLocation(new Coordinate(coords.getX()-1, coords.getY())): null;
+                adjacentTile = coords.getX() > 0? tiles.get(coords.getY()).get(coords.getX() - 1) : null;
                 break;
             default:
                 adjacentTile = null;
