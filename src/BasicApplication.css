@@ -8,22 +8,38 @@
     -fx-text-fill: #2d3e4c;
 }
 
+.button {
+	-fx-cursor: hand;
+	-fx-padding: 10px;
+	-fx-background-color: linear-gradient(to right, #acb6e5, #86fde8);
+	-fx-font-size: 20px;
+}
+
+#vbox {
+	-fx-background-color: rgb(42, 55, 63);
+}
+
+#stepBtn {
+	-fx-translate-y: 10px;
+}
+
+#canvas {
+	-fx-background-color: rgb(42, 55, 63);
+	-fx-min-width: 100%;
+	-fx-min-height: 300px;
+	-fx-translate-y: 20px;
+}
+
 #homeSceneLabel {
 	-fx-font-size: 24px;
 }
 
 #homeSceneBtn {
-	-fx-cursor: hand;
 	-fx-padding: 30px;
 	-fx-font-size: 20px;
-	-fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
-        #9d4024,
-        #d86e3a,
-        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);
 }
 
-#homeSceneBtn:hover {
+.button:hover {
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-scale-z: 1.1;
