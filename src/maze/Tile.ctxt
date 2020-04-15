@@ -1,11 +1,11 @@
 #BlueJ class context
 comment0.target=Tile
 comment1.params=type
-comment1.target=Tile(Maze.Tile.Type)
+comment1.target=Tile(Tile.Type)
 comment2.params=c
-comment2.target=Maze.Tile\ fromChar(char)
+comment2.target=Tile\ fromChar(char)
 comment3.params=
-comment3.target=Maze.Tile.Type\ getType()
+comment3.target=Tile.Type\ getType()
 comment4.params=
 comment4.target=boolean\ isNavigable()
 comment5.params=

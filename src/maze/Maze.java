@@ -60,14 +60,16 @@ public class Maze implements java.io.Serializable{
                         try {
                             maze.setEntrance(tile);
                         } catch(MultipleEntranceException ex) {
-                            ex.printStackTrace();
+                            throw new MultipleEntranceException("Multiple Entrances found in the Maze!");
+                            //ex.printStackTrace();
                         }
                     }
                     if(character == 'x') {
                         try {
                             maze.setExit(tile);
                         } catch(MultipleExitException ex) {
-                            ex.printStackTrace();
+                            throw new MultipleExitException("Multiple Exits found in the Maze!");
+                            //ex.printStackTrace();
                         }
                     }
                 }

@@ -176,8 +176,8 @@ public class MazeApplication extends Application
     }
 
     public void StepButtonPressed() {
-        Maze maze = rf.getMaze();
-        if(maze != null) {
+        if(rf != null) {
+            Maze maze = rf.getMaze();
             int BlockHeight = 25;
             int BlockWidth = 50;
             String[] mazeStr = maze.toString().split("\n");
