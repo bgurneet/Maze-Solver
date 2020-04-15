@@ -29,13 +29,11 @@ public class MazeApplication1 extends Application{
 
     public List<List<Rectangle>> blocks;
     public RouteFinder rf;
-    public BestRouteFinder brf;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
         primaryStage.setTitle("Maze Application");
-
         primaryStage.setScene(getHomeScene());
         primaryStage.show();
 
@@ -223,7 +221,6 @@ public class MazeApplication1 extends Application{
     }
 
     public void depthFirstClicked() {
-        System.out.println("Depth First Clicked!");
         //re-initialise the variables that are common
         blocks = null;
         rf = null;
@@ -232,7 +229,6 @@ public class MazeApplication1 extends Application{
     }
 
     public void breadthFirstClicked() {
-        System.out.println("Breadth First Clicked!");
         //re-initialise the variables that are common
         blocks = null;
         rf = null;
@@ -365,10 +361,43 @@ public class MazeApplication1 extends Application{
             alert.showAndWait();
         }
     }
-
+    
     public void BreadthFirstStepButtonPressed() {
-        System.out.println("Breadth First Step Button ");
-        if(brf != null) {
+        //System.out.println("Breadth First Step Button ");
+        if(rf != null) {
+            Maze maze = rf.getMaze();
+            int BlockHeight = 25;
+            int BlockWidth = 50;
+            String[] mazeStr = maze.toString().split("\n");
+            try {
+                //finished
+                if(rf != null && !rf.bestRouteStep()) {
+                    List<Tile> route = rf.getBestRoute();
+                    System.out.println(route.size());
+                    for(List<Tile> row: maze.getTiles()) {
+                        for(Tile tile: row) {
+                            Maze.Coordinate coords = maze.getTileLocation(tile);
+                            int numOfRows = maze.getTiles().size() - 1;
+                            int coordY = (coords.getY() - numOfRows) * -1;
+                            Rectangle block = blocks.get(coordY).get(coords.getX()); 
+                            if(route.contains(tile)) {
+                                if(block.getFill() != Color.DARKTURQUOISE) {
+                                    block.setFill(Color.DARKTURQUOISE);
+                                }
+                            } else if(block.getFill() == Color.DARKTURQUOISE){
+                                block.setFill(getColour(tile.toString().charAt(0)));
+                            }
+                        }
+                    }
+                }
+            } catch(NoRouteFoundException ex) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+                alert.setContentText(ex.getMessage());
+
+                alert.showAndWait();
+            }
         } else {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");

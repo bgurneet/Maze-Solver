@@ -8,6 +8,7 @@ public class RouteFinder implements java.io.Serializable{
 
     private Maze maze;
     private Stack<Tile> route;
+    private Queue<Tile> bestRoute;
     private List<Tile> traversedTiles;
     private boolean finished;
 
@@ -15,6 +16,7 @@ public class RouteFinder implements java.io.Serializable{
         this.maze = maze;
         //Tile entrance = this.maze.getEntrance();
         this.route = new Stack<Tile>();
+        this.bestRoute = new LinkedList<Tile>();
         //this.route.push(entrance);
         this.traversedTiles = new ArrayList<Tile>();
         //this.traversedTiles.add(entrance);
@@ -57,6 +59,47 @@ public class RouteFinder implements java.io.Serializable{
         } catch(IOException ex) {
             throw new IOException(ex);
         }
+    }
+    
+    public List<Tile> getBestRoute() {
+        //return this.bestRoute;
+        return this.traversedTiles;
+    }
+    
+    public boolean bestRouteStep() {
+        if(!this.finished) {
+            if(!(this.traversedTiles.contains(this.maze.getEntrance()))) {
+                this.bestRoute.add(this.maze.getEntrance());
+                this.traversedTiles.add(this.maze.getEntrance());
+            } else {
+                int count = this.bestRoute.size();
+                Queue <Tile> newTiles = new LinkedList<Tile>();
+                while(count > 0) {
+                    count -= 1;
+                    Tile currentTile = this.bestRoute.remove();
+                    if(currentTile == this.maze.getExit()) {
+                        this.finished = true;
+                        break;
+                    } else {
+                        Tile northTile = maze.getAdjacentTile(currentTile, Maze.Direction.NORTH);
+                        Tile southTile = maze.getAdjacentTile(currentTile, Maze.Direction.SOUTH);
+                        Tile westTile = maze.getAdjacentTile(currentTile, Maze.Direction.WEST);
+                        Tile eastTile = maze.getAdjacentTile(currentTile, Maze.Direction.EAST);
+                        Tile [] neighbours = new Tile[] {northTile, southTile, westTile, eastTile};
+                        System.out.println(traversedTiles);
+                        for(Tile neighbour: neighbours) {
+                            if(neighbour!=null && neighbour.isNavigable() && !traversedTiles.contains(neighbour)) {
+                                newTiles.add(neighbour);
+                                this.traversedTiles.add(neighbour);
+                            }
+                        }
+                        traversedTiles.add(currentTile);
+                    }
+                }
+                bestRoute.addAll(newTiles);
+            }
+        }
+        return this.finished;
     }
 
     public boolean step() {
