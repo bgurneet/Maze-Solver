@@ -29,6 +29,7 @@ public class MazeApplication1 extends Application{
 
     public List<List<Rectangle>> blocks;
     public RouteFinder rf;
+    public BestRouteFinder brf;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -364,9 +365,18 @@ public class MazeApplication1 extends Application{
             alert.showAndWait();
         }
     }
-    
+
     public void BreadthFirstStepButtonPressed() {
         System.out.println("Breadth First Step Button ");
+        if(brf != null) {
+        } else {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Maze Found!");
+            alert.setContentText("You need to load a Maze before you can try stepping through its route.");
+
+            alert.showAndWait();
+        }
     }
 
     public void LoadRouteMIClicked() {
