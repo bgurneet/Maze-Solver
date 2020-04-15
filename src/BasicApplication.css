@@ -24,10 +24,14 @@
 }
 
 #canvas {
-	-fx-background-color: rgb(42, 55, 63);
+	-fx-background-color: white;
 	-fx-min-width: 100%;
 	-fx-min-height: 300px;
 	-fx-translate-y: 20px;
+}
+
+#test {
+	-fx-background-color: pink;
 }
 
 #homeSceneLabel {

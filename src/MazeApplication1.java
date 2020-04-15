@@ -45,18 +45,18 @@ public class MazeApplication1 extends Application{
 
         Menu actionsMenu = new Menu("Maze Solvers");
 
-        MenuItem breadth = new MenuItem("Breadth First Algorithm");
-        breadth.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    breadthFirstClicked();
-                }
-            });
         MenuItem depth = new MenuItem("Depth First Algorithm");
         depth.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     depthFirstClicked();
+                }
+            });
+        MenuItem breadth = new MenuItem("Breadth First Algorithm");
+        breadth.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    breadthFirstClicked();
                 }
             });
         actionsMenu.getItems().add(breadth);
@@ -149,6 +149,42 @@ public class MazeApplication1 extends Application{
         return scene;
     }
 
+    public Scene getDepthFirstScene() {
+        MenuBar menuBar = getMenuBar(false);
+
+        Button stepBtn = new Button("Step");
+        stepBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    DepthFirstStepButtonPressed();
+                }
+            });
+        //stepBtn.setId("stepBtn");
+
+        canvas = new Pane();
+        canvas.setId("canvas");
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setId("vbox");
+        anchorPane.setTopAnchor(stepBtn, 10.0);
+        anchorPane.setLeftAnchor(stepBtn, 100.0);
+        anchorPane.setRightAnchor(stepBtn, 100.0);
+        anchorPane.setTopAnchor(canvas, 50.0);
+        anchorPane.setRightAnchor(canvas, 0.0);
+        anchorPane.setLeftAnchor(canvas, 0.0);
+        anchorPane.setBottomAnchor(canvas, 0.0);
+        anchorPane.getChildren().addAll(stepBtn, canvas);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(anchorPane);
+
+        Scene scene = new Scene(borderPane, 600, 500);
+        scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
+
+        return scene;
+    }
+
     public Scene getBreadthFirstScene() {
         MenuBar menuBar = getMenuBar(false);
 
@@ -187,6 +223,11 @@ public class MazeApplication1 extends Application{
 
     public void depthFirstClicked() {
         System.out.println("Depth First Clicked!");
+        //re-initialise the variables that are common
+        blocks = null;
+        rf = null;
+
+        stage.setScene(getDepthFirstScene());
     }
 
     public void breadthFirstClicked() {
@@ -194,7 +235,6 @@ public class MazeApplication1 extends Application{
         //re-initialise the variables that are common
         blocks = null;
         rf = null;
-
         stage.setScene(getBreadthFirstScene());
     }
 
@@ -238,13 +278,15 @@ public class MazeApplication1 extends Application{
         canvas.getChildren().clear();
         Maze maze = rf.getMaze();
         String[] mazeStr = maze.toString().split("\n");
-        int BlockHeight = 25;
+        int BlockHeight = 50;
         int BlockWidth = 50;
         for(int row=0;row<mazeStr.length;row++) {
             List<Rectangle> currentRow = new ArrayList<Rectangle>();
             for(int col=0;col<mazeStr[row].length();col++) {
                 Color colour = getColour(mazeStr[row].charAt(col));
                 Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
+                rectangle.setArcWidth(20);
+                rectangle.setArcHeight(20);
                 rectangle.relocate(col*BlockWidth, row*BlockHeight);
                 currentRow.add(rectangle);
                 canvas.getChildren().addAll(rectangle);
@@ -257,7 +299,7 @@ public class MazeApplication1 extends Application{
                 Maze.Coordinate coords = maze.getTileLocation(tile);
                 int numOfRows = maze.getTiles().size() - 1;
                 int coordY = numOfRows - coords.getY();
-                Rectangle block = blocks.get(coordY).get(coords.getX()); 
+                Rectangle block = blocks.get(coordY).get(coords.getX());
                 if(route.contains(tile)) {
                     if(block.getFill() != Color.DARKTURQUOISE) {
                         block.setFill(Color.DARKTURQUOISE);
@@ -278,8 +320,8 @@ public class MazeApplication1 extends Application{
 
         return colours.get(c);
     }
-    
-    public void BreadthFirstStepButtonPressed() {
+
+    public void DepthFirstStepButtonPressed() {
         if(rf != null) {
             Maze maze = rf.getMaze();
             int BlockHeight = 25;
@@ -323,6 +365,10 @@ public class MazeApplication1 extends Application{
         }
     }
     
+    public void BreadthFirstStepButtonPressed() {
+        System.out.println("Breadth First Step Button ");
+    }
+
     public void LoadRouteMIClicked() {
         //FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
         FileChooser fileChooser = new FileChooser();
@@ -336,7 +382,7 @@ public class MazeApplication1 extends Application{
             renderMaze();
         }
     }
-    
+
     public void SaveRouteMIClicked() {
         if(rf == null) {
             Alert alert = new Alert(AlertType.ERROR);
