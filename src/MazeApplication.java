@@ -35,7 +35,9 @@ public class MazeApplication extends Application{
     
     public int screenWidth = 600;
     public int screenHeight = 500;
-
+    
+    /**Shows the home scene on the given stage to the user
+       @param tile*/
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
