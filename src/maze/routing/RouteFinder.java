@@ -72,31 +72,35 @@ public class RouteFinder implements java.io.Serializable{
                 this.bestRoute.add(this.maze.getEntrance());
                 this.traversedTiles.add(this.maze.getEntrance());
             } else {
-                int count = this.bestRoute.size();
-                Queue <Tile> newTiles = new LinkedList<Tile>();
-                while(count > 0) {
-                    count -= 1;
-                    Tile currentTile = this.bestRoute.remove();
-                    if(currentTile == this.maze.getExit()) {
-                        this.finished = true;
-                        break;
-                    } else {
-                        Tile northTile = maze.getAdjacentTile(currentTile, Maze.Direction.NORTH);
-                        Tile southTile = maze.getAdjacentTile(currentTile, Maze.Direction.SOUTH);
-                        Tile westTile = maze.getAdjacentTile(currentTile, Maze.Direction.WEST);
-                        Tile eastTile = maze.getAdjacentTile(currentTile, Maze.Direction.EAST);
-                        Tile [] neighbours = new Tile[] {northTile, southTile, westTile, eastTile};
-                        System.out.println(traversedTiles);
-                        for(Tile neighbour: neighbours) {
-                            if(neighbour!=null && neighbour.isNavigable() && !traversedTiles.contains(neighbour)) {
-                                newTiles.add(neighbour);
-                                this.traversedTiles.add(neighbour);
+                if(this.bestRoute.size() > 0) {
+                    int count = this.bestRoute.size();
+                    Queue <Tile> newTiles = new LinkedList<Tile>();
+                    while(count > 0) {
+                        count -= 1;
+                        Tile currentTile = this.bestRoute.remove();
+                        if(currentTile == this.maze.getExit()) {
+                            this.finished = true;
+                            break;
+                        } else {
+                            Tile northTile = maze.getAdjacentTile(currentTile, Maze.Direction.NORTH);
+                            Tile southTile = maze.getAdjacentTile(currentTile, Maze.Direction.SOUTH);
+                            Tile westTile = maze.getAdjacentTile(currentTile, Maze.Direction.WEST);
+                            Tile eastTile = maze.getAdjacentTile(currentTile, Maze.Direction.EAST);
+                            Tile [] neighbours = new Tile[] {northTile, southTile, westTile, eastTile};
+                            System.out.println(traversedTiles);
+                            for(Tile neighbour: neighbours) {
+                                if(neighbour!=null && neighbour.isNavigable() && !traversedTiles.contains(neighbour)) {
+                                    newTiles.add(neighbour);
+                                    this.traversedTiles.add(neighbour);
+                                }
                             }
+                            traversedTiles.add(currentTile);
                         }
-                        traversedTiles.add(currentTile);
                     }
+                    bestRoute.addAll(newTiles);
+                } else {
+                    throw new NoRouteFoundException("No route found in this maze!");
                 }
-                bestRoute.addAll(newTiles);
             }
         }
         return this.finished;
