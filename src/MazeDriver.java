@@ -6,6 +6,11 @@ import java.io.*;
 import maze.routing.*;
 import java.util.*;
 
+/**
+ * The Class MazeDriver.
+* @author Gurneet Bhatia
+* @version 1.0
+*/
 public class MazeDriver {
     /*public static void main(String [] args) {
         

@@ -3,19 +3,45 @@ import java.util.*;
 import java.io.*;
 
 
+/**
+ * The Class Tile.
+ */
 public class Tile implements java.io.Serializable{
 
+    /**
+     * The Enum Type.
+     */
     public enum Type
     {
-        CORRIDOR, ENTRANCE, EXIT, WALL;
+        
+        /** The corridor. */
+        CORRIDOR, 
+        /** The entrance. */
+        ENTRANCE, 
+        /** The exit. */
+        EXIT, 
+        /** The wall. */
+        WALL;
     }
 
+    /** The type. */
     private Type type;
 
+    /**
+     * Instantiates a new tile.
+     *
+     * @param type the type
+     */
     private Tile(Type type) {
         this.type = type;
     }
 
+    /**
+     * From char.
+     *
+     * @param c the c
+     * @return the tile
+     */
     protected static Tile fromChar(char c) {
         HashMap<Character, Type> types = new HashMap<Character, Type>();
         types.put('.', Type.CORRIDOR);
@@ -25,10 +51,20 @@ public class Tile implements java.io.Serializable{
         return new Tile(types.get(c));
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
     public Type getType() {
         return this.type;
     }
 
+    /**
+     * Checks if is navigable.
+     *
+     * @return true, if is navigable
+     */
     public boolean isNavigable() {
         if(this.type == Type.WALL)
             return false;
@@ -36,6 +72,11 @@ public class Tile implements java.io.Serializable{
             return true;
     }
 
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     public String toString() {
         String output = "";
 

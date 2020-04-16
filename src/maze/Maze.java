@@ -2,42 +2,99 @@ package maze;
 import java.util.*;
 import java.io.*;
 
+/**
+ * The Class Maze.
+* @author Gurneet Bhatia
+* @version 1.0
+*/
 public class Maze implements java.io.Serializable{
 
+    /**
+     * The Enum Direction.
+     */
     public enum Direction
     {
-        NORTH, SOUTH, EAST, WEST;
+        
+        /** The north. */
+        NORTH, 
+        /** The south. */
+        SOUTH, 
+        /** The east. */
+        EAST, 
+        /** The west. */
+        WEST;
     }
 
+    /**
+     * The Class Coordinate
+     */
     public static class Coordinate {
+        
+        /** The x and the y. */
         private int x, y;
 
+        /**
+         * Instantiates a new coordinate.
+         *
+         * @param x the x
+         * @param y the y
+         */
         public Coordinate(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
+        /**
+         * Gets the x.
+         *
+         * @return the x
+         */
         public int getX() {
             return this.x;
         }
 
+        /**
+         * Gets the y.
+         *
+         * @return the y
+         */
         public int getY() {
             return this.y;
         }
 
+        /**
+         * To string.
+         *
+         * @return the Coordinates as a string
+         */
         public String toString() {
             return "("+this.x+", "+this.y+")";
         }
     }
 
+    /** The entrance. */
     private Tile entrance;
+    
+    /** The exit. */
     private Tile exit;
+    
+    /** The tiles. */
     private List<List<Tile>> tiles;
 
+    /**
+     * Instantiates a new maze.
+     */
     private Maze() {
         this.tiles = new ArrayList<List<Tile>>();
     }
 
+    /**
+     * From txt.
+     *
+     * @param filename the filename
+     * @return the maze
+     * @throws InvalidMazeException thrown when certain conditions are met
+     */
     public static Maze fromTxt(String filename) throws InvalidMazeException {
         Maze maze = new Maze();
         try {
@@ -91,6 +148,13 @@ public class Maze implements java.io.Serializable{
         return maze;
     }
 
+    /**
+     * Gets the adjacent tile.
+     *
+     * @param tile the tile
+     * @param direction the direction
+     * @return the adjacent tile
+     */
     public Tile getAdjacentTile(Tile tile, Direction direction) {
         Coordinate coords = getTileLocation(tile);
         Tile adjacentTile;
@@ -113,14 +177,30 @@ public class Maze implements java.io.Serializable{
         return adjacentTile;
     }
 
+    /**
+     * Gets the entrance.
+     *
+     * @return the entrance
+     */
     public Tile getEntrance() {
         return this.entrance;
     }
 
+    /**
+     * Gets the exit.
+     *
+     * @return the exit
+     */
     public Tile getExit() {
         return this.exit;
     }
 
+    /**
+     * Gets the tile at location.
+     *
+     * @param coord the coord
+     * @return the tile at location
+     */
     public Tile getTileAtLocation(Coordinate coord) {
         // (0, 0) is the bottom-left of the maze
         int numOfRows = tiles.size() - 1;
@@ -128,6 +208,12 @@ public class Maze implements java.io.Serializable{
         return tiles.get(coordY).get(coord.getX());
     }
 
+    /**
+     * Gets the tile location.
+     *
+     * @param tile the tile
+     * @return the tile location
+     */
     public Coordinate getTileLocation(Tile tile) {
         int row, col = 0;
         boolean found = false;
@@ -154,10 +240,22 @@ public class Maze implements java.io.Serializable{
         return found ? new Coordinate(col, row) : null;
     }
 
+    /**
+     * Gets the tiles.
+     *
+     * @return the tiles
+     */
     public List<List<Tile>> getTiles() {
         return tiles;
     }
 
+    /**
+     * Sets the entrance.
+     *
+     * @param tile the new entrance
+     * @throws MultipleEntranceException the multiple entrance exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     private void setEntrance(Tile tile) throws MultipleEntranceException, IllegalAccessException {
         if(getTileLocation(tile) == null){
             throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
@@ -172,6 +270,13 @@ public class Maze implements java.io.Serializable{
         }
     }
 
+    /**
+     * Sets the exit.
+     *
+     * @param tile the new exit
+     * @throws MultipleExitException the multiple exit exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     private void setExit(Tile tile) throws MultipleExitException, IllegalAccessException {
         if(getTileLocation(tile) == null){
             throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
@@ -183,6 +288,11 @@ public class Maze implements java.io.Serializable{
         }
     }
 
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     public String toString() {
         String output = "";
         for(List<Tile> row: tiles) {

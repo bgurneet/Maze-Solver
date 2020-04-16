@@ -24,20 +24,38 @@ import java.io.*;
 import maze.*;
 import maze.routing.*;
 
+/**
+* MazeApplication.java - a javafx class for displaying the application as GUI to the user
+* @author Gurneet Bhatia
+* @version 1.0
+*/
 public class MazeApplication extends Application{
+    
+    /** The stage. */
     // the stage that is used through the application
     Stage stage = null;
-    // the Pane on which the blocks of the maze are rendered
+    
+    /** the Pane on which the blocks of the maze are rendered */
     Pane canvas;
-    // the parts of the maze
+    
+    /** the parts of the maze */
     public List<List<Rectangle>> blocks;
+    
+    /** The RouteFinder object. */
     public RouteFinder rf;
     
+    /** The screen width (for the stage). */
     public int screenWidth = 600;
+    
+    /** The screen height (for the stage). */
     public int screenHeight = 500;
     
-    /**Shows the home scene on the given stage to the user
-       @param tile*/
+    /**
+     * Start.
+     *
+     * @param primaryStage the primary stage on which the GUI is rendered for the user
+     * @throws Exception thrown when any kind of error occurs while loading the stage and its scene
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
@@ -47,6 +65,13 @@ public class MazeApplication extends Application{
 
     }
 
+    
+    /**
+     * Gets the menu bar - most of its features are common to all the scenes.
+     *
+     * @param disableControls used to disable the Controls Menu when on the home scene
+     * @return the menu bar
+     */
     public MenuBar getMenuBar(boolean disableControls) {
         MenuBar menuBar = new MenuBar();
         
@@ -115,6 +140,11 @@ public class MazeApplication extends Application{
         return menuBar;
     }
 
+    /**
+     * Gets the home scene.
+     *
+     * @return the home scene
+     */
     public Scene getHomeScene() {
         // this shows the home page/start page and returns a scene
         Label startInstructionLabel = new Label("Please choose one of the Maze Solvers to start");
@@ -158,6 +188,11 @@ public class MazeApplication extends Application{
         return scene;
     }
 
+    /**
+     * Gets the depth first scene.
+     *
+     * @return the depth first scene
+     */
     public Scene getDepthFirstScene() {
         // renders the scene for the depth first search
         MenuBar menuBar = getMenuBar(false);
@@ -194,6 +229,11 @@ public class MazeApplication extends Application{
         return scene;
     }
 
+    /**
+     * Gets the breadth first scene.
+     *
+     * @return the breadth first scene
+     */
     public Scene getBreadthFirstScene() {
         MenuBar menuBar = getMenuBar(false);
 
@@ -230,6 +270,9 @@ public class MazeApplication extends Application{
         return scene;
     }
 
+    /**
+     * Depth first Button or MenuItem clicked.
+     */
     public void depthFirstClicked() {
         //re-initialise the variables that are common
         blocks = null;
@@ -238,6 +281,9 @@ public class MazeApplication extends Application{
         stage.setScene(getDepthFirstScene());
     }
 
+    /**
+     * Breadth first Button or MenuItem clicked.
+     */
     public void breadthFirstClicked() {
         //re-initialise the variables that are common
         blocks = null;
@@ -245,14 +291,24 @@ public class MazeApplication extends Application{
         stage.setScene(getBreadthFirstScene());
     }
 
+    /**
+     * Legend MenuItemclicked.
+     */
     public void legendClicked() {
         System.out.println("Legend Clicked!");
     }
 
+    /**
+     * Instructions MenuItem clicked.
+     */
     public void instructionsClicked() {
         System.out.println("Instructions Clicked!");
     }
 
+    /**
+     * Load map MI clicked.
+     * Displays a FileChooser to the user that allows them to load a text file
+     */
     public void LoadMapMIClicked() {
         // display a file chooser to the user that allows them to select .txt files which represent the maze structure
         FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("TXT file (*.txt)", "*.txt");
@@ -267,6 +323,11 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * Load map.
+     *
+     * @param filename the filename that is used to load the maze structure
+     */
     public void LoadMap(String filename) {
         // validate the maze file and if no errors are found render the maze on the Pane
         // if an error is encountered, inform the user
@@ -284,6 +345,9 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * Render maze graphically and display on the canvas Pane object.
+     */
     public void renderMaze() {
         // start by re-initialising the 2D list that represents the graphics of the maze
         blocks = new ArrayList<List<Rectangle>>();
@@ -339,6 +403,13 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * Gets the colour.
+     * The colour returned depends on the type of character that was provided.
+     *
+     * @param c the c
+     * @return the colour
+     */
     public Color getColour(char c) {
         HashMap<Character, Color> colours = new HashMap<Character, Color>();
         colours.put('.', Color.SNOW);
@@ -349,10 +420,14 @@ public class MazeApplication extends Application{
         return colours.get(c);
     }
 
+    /**
+     * Depth first step button pressed.
+     * Calls the RouteFinder.step() method to determine what happens next
+     */
     public void DepthFirstStepButtonPressed() {
         if(rf != null) {
             Maze maze = rf.getMaze();
-            int BlockHeight = 25;
+            int BlockHeight = 50;
             int BlockWidth = 50;
             String[] mazeStr = maze.toString().split("\n");
             try {
@@ -393,11 +468,15 @@ public class MazeApplication extends Application{
         }
     }
     
+    /**
+     * Breadth first step button pressed.
+     * Calls the RouteFinder.bestRouteStep() method to find out what happens next
+     */
     public void BreadthFirstStepButtonPressed() {
         //System.out.println("Breadth First Step Button ");
         if(rf != null) {
             Maze maze = rf.getMaze();
-            int BlockHeight = 25;
+            int BlockHeight = 50;
             int BlockWidth = 50;
             String[] mazeStr = maze.toString().split("\n");
             try {
@@ -439,6 +518,10 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * Load route MenuItem clicked.
+     * Displays a FileChooser to the user that allows them to select and load a serialised object file
+     */
     public void LoadRouteMIClicked() {
         //FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("SER file (*.ser)", "*.ser");
         FileChooser fileChooser = new FileChooser();
@@ -453,6 +536,11 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * Save route MI clicked.
+     * Saves the current state of the RouteFinder object rf as a java serialised object with the filename specified by the user
+     * The filepath is also chosen by the user.
+     */
     public void SaveRouteMIClicked() {
         if(rf == null) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -483,6 +571,11 @@ public class MazeApplication extends Application{
         }
     }
 
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args) {
         // this is where the program starts, it essentially calls the start method
         Application.launch(args);

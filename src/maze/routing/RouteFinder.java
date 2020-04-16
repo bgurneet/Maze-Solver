@@ -4,14 +4,33 @@ import maze.*;
 import java.util.*;
 import java.io.*;
 
+/**
+ * The Class RouteFinder.
+* @author Gurneet Bhatia
+* @version 1.0
+*/
 public class RouteFinder implements java.io.Serializable{
 
+    /** The maze. */
     private Maze maze;
+    
+    /** The route. */
     private Stack<Tile> route;
+    
+    /** The best route. */
     private Queue<Tile> bestRoute;
+    
+    /** The traversed tiles. */
     private List<Tile> traversedTiles;
+    
+    /** The finished. */
     private boolean finished;
 
+    /**
+     * Instantiates a new route finder.
+     *
+     * @param maze the maze
+     */
     public RouteFinder(Maze maze) {
         this.maze = maze;
         //Tile entrance = this.maze.getEntrance();
@@ -23,18 +42,39 @@ public class RouteFinder implements java.io.Serializable{
         this.finished = false;
     }
 
+    /**
+     * Gets the maze.
+     *
+     * @return the maze
+     */
     public Maze getMaze() {
         return maze;
     }
 
+    /**
+     * Gets the route.
+     *
+     * @return the route
+     */
     public List<Tile> getRoute() {
         return route;
     }
 
+    /**
+     * Checks if is finished.
+     *
+     * @return true, if is finished
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * Load.
+     *
+     * @param filename the filename
+     * @return the route finder
+     */
     public static RouteFinder load(String filename) {
         RouteFinder rf = null;
         try {
@@ -49,6 +89,12 @@ public class RouteFinder implements java.io.Serializable{
         return rf;
     }
 
+    /**
+     * Save.
+     *
+     * @param filename the filename
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public void save(String filename) throws IOException {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
@@ -61,11 +107,21 @@ public class RouteFinder implements java.io.Serializable{
         }
     }
     
+    /**
+     * Gets the best route.
+     *
+     * @return the best route
+     */
     public List<Tile> getBestRoute() {
         //return this.bestRoute;
         return this.traversedTiles;
     }
     
+    /**
+     * Best route step.
+     *
+     * @return true, if successful
+     */
     public boolean bestRouteStep() {
         if(!this.finished) {
             if(!(this.traversedTiles.contains(this.maze.getEntrance()))) {
@@ -106,6 +162,11 @@ public class RouteFinder implements java.io.Serializable{
         return this.finished;
     }
 
+    /**
+     * Step.
+     *
+     * @return true, if successful
+     */
     public boolean step() {
         if(!this.finished) {
             if(!(this.route.contains(this.maze.getEntrance()) || this.traversedTiles.contains(this.maze.getEntrance()))) {
@@ -150,6 +211,11 @@ public class RouteFinder implements java.io.Serializable{
         return this.finished;
     }
 
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     public String toString() {
         String output = "";
         List<List<Tile>> mazeTiles = maze.getTiles();
