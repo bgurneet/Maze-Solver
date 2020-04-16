@@ -1,9 +1,9 @@
-// Version 1.1, Tuesday 7th April @ 2:40pm
+// Version 1.3, Tuesday 15th April @ 8:20am
 package tests.dev;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.EOFException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -86,8 +86,8 @@ public class RouteFinderTest {
 
         try {
             orig.save(filename);
-        } catch (IOException e) {
-            fail("IOException: " + e.getMessage());
+        } catch (Exception e) {
+            fail(e.getClass().getName() + ": " +  e.getMessage());
         }
         File saved = new File(filename);
         assertTrue(saved.exists());
@@ -441,7 +441,7 @@ public class RouteFinderTest {
         try {
             loaded = RouteFinder.load(filename);
         } catch (Exception e) {
-          if (!e.getClass().equals(ClassNotFoundException.class)) {
+          if (!e.getClass().equals(EOFException.class)) {
               fail(e.getClass().getName() + ": " + e.getMessage());
           }
         }

@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.util.*;
@@ -23,12 +24,17 @@ import java.io.*;
 import maze.*;
 import maze.routing.*;
 
-public class MazeApplication1 extends Application{
+public class MazeApplication extends Application{
+    // the stage that is used through the application
     Stage stage = null;
+    // the Pane on which the blocks of the maze are rendered
     Pane canvas;
-
+    // the parts of the maze
     public List<List<Rectangle>> blocks;
     public RouteFinder rf;
+    
+    public int screenWidth = 600;
+    public int screenHeight = 500;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -80,6 +86,7 @@ public class MazeApplication1 extends Application{
         controlsMenu.getItems().add(loadMap);
         controlsMenu.getItems().add(loadRoute);
         controlsMenu.getItems().add(saveRoute);
+        // the controls menu is not accessible when it is called from the home page
         if(disableControls) controlsMenu.setDisable(true);
 
         Menu helperMenu = new Menu("Help");
@@ -107,6 +114,7 @@ public class MazeApplication1 extends Application{
     }
 
     public Scene getHomeScene() {
+        // this shows the home page/start page and returns a scene
         Label startInstructionLabel = new Label("Please choose one of the Maze Solvers to start");
         startInstructionLabel.setId("homeSceneLabel");
         startInstructionLabel.setTextFill(Color.WHITE);
@@ -142,13 +150,14 @@ public class MazeApplication1 extends Application{
         borderPane.setTop(menuBar);
         borderPane.setCenter(vbox);
 
-        Scene scene = new Scene(borderPane, 600, 500);
+        Scene scene = new Scene(borderPane, screenWidth, screenHeight);
         scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
 
         return scene;
     }
 
     public Scene getDepthFirstScene() {
+        // renders the scene for the depth first search
         MenuBar menuBar = getMenuBar(false);
 
         Button stepBtn = new Button("Step");
@@ -158,7 +167,6 @@ public class MazeApplication1 extends Application{
                     DepthFirstStepButtonPressed();
                 }
             });
-        //stepBtn.setId("stepBtn");
 
         canvas = new Pane();
         canvas.setId("canvas");
@@ -178,7 +186,7 @@ public class MazeApplication1 extends Application{
         borderPane.setTop(menuBar);
         borderPane.setCenter(anchorPane);
 
-        Scene scene = new Scene(borderPane, 600, 500);
+        Scene scene = new Scene(borderPane, screenWidth, screenHeight);
         scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
 
         return scene;
@@ -214,7 +222,7 @@ public class MazeApplication1 extends Application{
         borderPane.setTop(menuBar);
         borderPane.setCenter(anchorPane);
 
-        Scene scene = new Scene(borderPane, 600, 500);
+        Scene scene = new Scene(borderPane, screenWidth, screenHeight);
         scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
 
         return scene;
@@ -224,7 +232,7 @@ public class MazeApplication1 extends Application{
         //re-initialise the variables that are common
         blocks = null;
         rf = null;
-
+        // change the scene on the stage to the one that sets the step button to call the relevant step method
         stage.setScene(getDepthFirstScene());
     }
 
@@ -244,6 +252,7 @@ public class MazeApplication1 extends Application{
     }
 
     public void LoadMapMIClicked() {
+        // display a file chooser to the user that allows them to select .txt files which represent the maze structure
         FileChooser.ExtensionFilter ext = new FileChooser.ExtensionFilter("TXT file (*.txt)", "*.txt");
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(ext);
@@ -251,11 +260,14 @@ public class MazeApplication1 extends Application{
         fileChooser.setTitle("Open Maze Path");
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
+            // once the file is chosen, load the map
             LoadMap(file.getAbsolutePath());
         }
     }
 
     public void LoadMap(String filename) {
+        // validate the maze file and if no errors are found render the maze on the Pane
+        // if an error is encountered, inform the user
         try {
             Maze maze = Maze.fromTxt(filename);
             rf = new RouteFinder(maze);
@@ -271,21 +283,38 @@ public class MazeApplication1 extends Application{
     }
 
     public void renderMaze() {
+        // start by re-initialising the 2D list that represents the graphics of the maze
         blocks = new ArrayList<List<Rectangle>>();
+        // and resetting the pane that the rectangle objects are rendered on
         canvas.getChildren().clear();
+        // since maze.maze has private access, call the relevant method to acces it
         Maze maze = rf.getMaze();
         String[] mazeStr = maze.toString().split("\n");
+        // made BlockHeight and BlockWidth variables so that if I wanted to change them later on, it would be much easier than changing every number individually
         int BlockHeight = 50;
         int BlockWidth = 50;
+        // auto-resize the stage depending on the size of the maze
+        screenWidth = screenWidth < (BlockWidth * mazeStr[0].length()) ? (BlockWidth * mazeStr[0].length()) : screenWidth;
+        screenHeight = (screenHeight - 50) <= (BlockHeight * mazeStr.length) ? (BlockHeight * (mazeStr.length+1)) + 75 : screenHeight;
+        stage.setWidth(screenWidth);
+        stage.setHeight(screenHeight);
+        System.out.println((BlockHeight * mazeStr.length));
+        System.out.println(screenWidth+" "+screenHeight);
         for(int row=0;row<mazeStr.length;row++) {
+            // each row consists of a list of rectangle object, so iterate over those too
             List<Rectangle> currentRow = new ArrayList<Rectangle>();
             for(int col=0;col<mazeStr[row].length();col++) {
+                // use the getColour to find out what colour the rectangle at certain coordinates should be
+                // it depends on what character is held in the maze string at that index
                 Color colour = getColour(mazeStr[row].charAt(col));
+                // generate the rectangle object
                 Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
                 rectangle.setArcWidth(20);
                 rectangle.setArcHeight(20);
+                // place the rectangle on the canvas at the relevant coordinates
                 rectangle.relocate(col*BlockWidth, row*BlockHeight);
                 currentRow.add(rectangle);
+                // add the rectangle to the canvas to show to the user
                 canvas.getChildren().addAll(rectangle);
             }
             blocks.add(currentRow);
@@ -453,6 +482,7 @@ public class MazeApplication1 extends Application{
     }
 
     public static void main(String[] args) {
+        // this is where the program starts, it essentially calls the start method
         Application.launch(args);
     }
 
