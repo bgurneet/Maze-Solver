@@ -364,8 +364,6 @@ public class MazeApplication extends Application{
         screenHeight = (screenHeight - 50) <= (BlockHeight * mazeStr.length) ? (BlockHeight * (mazeStr.length+1)) + 75 : screenHeight;
         stage.setWidth(screenWidth);
         stage.setHeight(screenHeight);
-        System.out.println((BlockHeight * mazeStr.length));
-        System.out.println(screenWidth+" "+screenHeight);
         for(int row=0;row<mazeStr.length;row++) {
             // each row consists of a list of rectangle object, so iterate over those too
             List<Rectangle> currentRow = new ArrayList<Rectangle>();
@@ -483,7 +481,6 @@ public class MazeApplication extends Application{
                 //finished
                 if(rf != null && !rf.bestRouteStep()) {
                     List<Tile> route = rf.getBestRoute();
-                    System.out.println(route.size());
                     for(List<Tile> row: maze.getTiles()) {
                         for(Tile tile: row) {
                             Maze.Coordinate coords = maze.getTileLocation(tile);
