@@ -129,22 +129,13 @@ public class RouteFinder implements java.io.Serializable{
     }
     
     /**
-     * Gets the best route.
+     * Gets the traversed.
      *
-     * @return the best route
+     * @return the traversed
      */
-    public List<Tile> getBestRoute() {
+    public List<Tile> getTraversedTiles() {
         //return this.bestRoute;
         return this.traversedTiles;
-    }
-
-    /**
-     * Gets the queue.
-     *
-     * @return the queue
-     */
-    public Queue<Tile> getQueue() {
-        return this.bestRoute;
     }
     
     /**

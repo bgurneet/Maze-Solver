@@ -394,6 +394,7 @@ public class MazeApplication extends Application{
             blocks.add(currentRow);
         }
         List<Tile> route = rf.getRoute();
+        List<Tile> traversedTiles = rf.getTraversedTiles();
         for(List<Tile> row: maze.getTiles()) {
             for(Tile tile: row) {
                 Maze.Coordinate coords = maze.getTileLocation(tile);
@@ -404,8 +405,8 @@ public class MazeApplication extends Application{
                     if(block.getFill() != Color.DARKTURQUOISE) {
                         block.setFill(Color.DARKTURQUOISE);
                     }
-                } else if(block.getFill() == Color.DARKTURQUOISE){
-                    block.setFill(getColour(tile.toString().charAt(0)));
+                } else if(traversedTiles.contains(tile)){
+                    block.setFill(Color.AQUAMARINE);
                 }
             }
         }
@@ -442,6 +443,7 @@ public class MazeApplication extends Application{
                 //finished
                 if(rf != null && !rf.step()) {
                     List<Tile> route = rf.getRoute();
+                    List<Tile> traversedTiles = rf.getTraversedTiles();
                     for(List<Tile> row: maze.getTiles()) {
                         for(Tile tile: row) {
                             Maze.Coordinate coords = maze.getTileLocation(tile);
@@ -452,8 +454,8 @@ public class MazeApplication extends Application{
                                 if(block.getFill() != Color.DARKTURQUOISE) {
                                     block.setFill(Color.DARKTURQUOISE);
                                 }
-                            } else if(block.getFill() == Color.DARKTURQUOISE){
-                                block.setFill(getColour(tile.toString().charAt(0)));
+                            } else if(traversedTiles.contains(tile)){
+                                block.setFill(Color.AQUAMARINE);
                             }
                         }
                     }
@@ -491,7 +493,7 @@ public class MazeApplication extends Application{
             try {
                 //finished
                 if(rf != null && !rf.bestRouteStep()) {
-                    List<Tile> route = rf.getBestRoute();
+                    List<Tile> route = rf.getTraversedTiles();
                     for(List<Tile> row: maze.getTiles()) {
                         for(Tile tile: row) {
                             Maze.Coordinate coords = maze.getTileLocation(tile);
