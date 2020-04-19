@@ -26,6 +26,9 @@ public class RouteFinder implements java.io.Serializable{
     /** The finished. */
     private boolean finished;
 
+    /** The variable that denotes which maze solving algorithm is being used (true is depth first and false is breadth first). */
+    private boolean algorithmInUse = false;
+
     /**
      * Instantiates a new route finder.
      *
@@ -43,12 +46,30 @@ public class RouteFinder implements java.io.Serializable{
     }
 
     /**
+     * sets the algorithm variable.
+     *
+     * @return void
+     */
+    public void setAlgorithm(boolean b) {
+        this.algorithmInUse = b;
+    }
+
+    /**
+     * Gets the algorithm variable.
+     *
+     * @return the algorithmInUse
+     */
+    public boolean getAlgorithm() {
+        return this.algorithmInUse;
+    }
+
+    /**
      * Gets the maze.
      *
      * @return the maze
      */
     public Maze getMaze() {
-        return maze;
+        return this.maze;
     }
 
     /**
@@ -57,7 +78,7 @@ public class RouteFinder implements java.io.Serializable{
      * @return the route
      */
     public List<Tile> getRoute() {
-        return route;
+        return this.route;
     }
 
     /**
@@ -66,7 +87,7 @@ public class RouteFinder implements java.io.Serializable{
      * @return true, if is finished
      */
     public boolean isFinished() {
-        return finished;
+        return this.finished;
     }
 
     /**
@@ -75,16 +96,16 @@ public class RouteFinder implements java.io.Serializable{
      * @param filename the filename
      * @return the route finder
      */
-    public static RouteFinder load(String filename) {
+    public static RouteFinder load(String filename) throws IOException, ClassNotFoundException{
         RouteFinder rf = null;
         try {
             FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
             rf = (RouteFinder) objIn.readObject();
         } catch(IOException ex){
-            ex.printStackTrace();
+            throw ex;
         } catch(ClassNotFoundException ex) {
-            ex.printStackTrace();
+            throw ex;
         }
         return rf;
     }
@@ -116,6 +137,15 @@ public class RouteFinder implements java.io.Serializable{
         //return this.bestRoute;
         return this.traversedTiles;
     }
+
+    /**
+     * Gets the queue.
+     *
+     * @return the queue
+     */
+    public Queue<Tile> getQueue() {
+        return this.bestRoute;
+    }
     
     /**
      * Best route step.
@@ -143,7 +173,7 @@ public class RouteFinder implements java.io.Serializable{
                             Tile westTile = maze.getAdjacentTile(currentTile, Maze.Direction.WEST);
                             Tile eastTile = maze.getAdjacentTile(currentTile, Maze.Direction.EAST);
                             Tile [] neighbours = new Tile[] {northTile, southTile, westTile, eastTile};
-                            System.out.println(traversedTiles);
+
                             for(Tile neighbour: neighbours) {
                                 if(neighbour!=null && neighbour.isNavigable() && !traversedTiles.contains(neighbour)) {
                                     newTiles.add(neighbour);

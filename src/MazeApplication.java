@@ -110,6 +110,12 @@ public class MazeApplication extends Application{
                 }
             });
         MenuItem saveRoute = new MenuItem("Save Route");
+        saveRoute.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SaveRouteMIClicked();
+            }
+        });
         controlsMenu.getItems().add(loadMap);
         controlsMenu.getItems().add(loadRoute);
         controlsMenu.getItems().add(saveRoute);
@@ -195,6 +201,7 @@ public class MazeApplication extends Application{
      */
     public Scene getDepthFirstScene() {
         // renders the scene for the depth first search
+
         MenuBar menuBar = getMenuBar(false);
 
         Button stepBtn = new Button("Step");
@@ -279,6 +286,7 @@ public class MazeApplication extends Application{
         rf = null;
         // change the scene on the stage to the one that sets the step button to call the relevant step method
         stage.setScene(getDepthFirstScene());
+        stage.setTitle("Depth First Solver");
     }
 
     /**
@@ -289,6 +297,7 @@ public class MazeApplication extends Application{
         blocks = null;
         rf = null;
         stage.setScene(getBreadthFirstScene());
+        stage.setTitle("Breadth First Solver");
     }
 
     /**
@@ -334,6 +343,7 @@ public class MazeApplication extends Application{
         try {
             Maze maze = Maze.fromTxt(filename);
             rf = new RouteFinder(maze);
+            rf.setAlgorithm(stage.getTitle().equals("Depth First Solver"));
             renderMaze();
         } catch(InvalidMazeException ex) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -448,6 +458,7 @@ public class MazeApplication extends Application{
                         }
                     }
                 }
+                rf.setAlgorithm(true);
             } catch(NoRouteFoundException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -497,6 +508,7 @@ public class MazeApplication extends Application{
                         }
                     }
                 }
+                rf.setAlgorithm(false);
             } catch(NoRouteFoundException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -528,8 +540,39 @@ public class MazeApplication extends Application{
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
             //LoadMap(file.getAbsolutePath());
-            rf = RouteFinder.load(file.getAbsolutePath());
-            renderMaze();
+            try {
+                RouteFinder newRF = RouteFinder.load(file.getAbsolutePath());
+                boolean algorithm = newRF.getAlgorithm();
+                // the scene needs to be changed
+                // the user is either on the breadth first scene right now and they have loaded a depth first or vice versa
+                if(algorithm) {
+                    // need the depth first scene
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Scene Change Required!");
+                    alert.setContentText("You have chosen to load a route that was initialised using the Depth First Search. You are being redirected to that page now.");
+                    alert.showAndWait();
+
+                    depthFirstClicked();
+                } else {
+                    // need the breadth first scene
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Scene Change Required!");
+                    alert.setContentText("You have chosen to load a route that was initialised using the Breadth First Search. You are being redirected to that page now.");
+                    alert.showAndWait();
+
+                    breadthFirstClicked();
+                }
+                rf = newRF;
+                renderMaze();
+            } catch(Exception ex) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(ex.getClass().getSimpleName() + " occured!");
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 
@@ -556,6 +599,12 @@ public class MazeApplication extends Application{
             if(file != null) {
                 try {
                     rf.save(file.getAbsolutePath());
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Operation Successful");
+                    alert.setHeaderText("File successfully saved!");
+                    alert.setContentText("The current state of the route solver has been successfully saved.");
+
+                    alert.showAndWait();
                 } catch(IOException ex) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
