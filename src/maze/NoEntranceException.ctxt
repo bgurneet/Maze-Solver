@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=NoEntranceException
+comment0.text=\n\ The\ Class\ NoEntranceException.\n\ @author\ Gurneet\ Bhatia\n\ @version\ 1.0\n
+comment1.params=errorMessage
+comment1.target=NoEntranceException(java.lang.String)
+comment1.text=\n\ Instantiates\ a\ new\ no\ entrance\ exception.\n\n\ @param\ errorMessage\ the\ error\ message\n
+numComments=2

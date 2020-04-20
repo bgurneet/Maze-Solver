@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=RaggedMazeException
+comment0.text=\n\ The\ Class\ RaggedMazeException.\n
+comment1.params=errorMessage
+comment1.target=RaggedMazeException(java.lang.String)
+comment1.text=\n\ Instantiates\ a\ new\ ragged\ maze\ exception.\n\n\ @param\ errorMessage\ the\ error\ message\n
+numComments=2

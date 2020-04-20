@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Tile
+comment0.text=\n\ The\ Class\ Tile.\n
+comment1.params=type
+comment1.target=Tile(Tile.Type)
+comment1.text=\n\ Instantiates\ a\ new\ tile.\n\n\ @param\ type\ the\ type\n
+comment2.params=c
+comment2.target=Tile\ fromChar(char)
+comment2.text=\n\ From\ char.\n\n\ @param\ c\ the\ c\n\ @return\ the\ tile\n
+comment3.params=
+comment3.target=Tile.Type\ getType()
+comment3.text=\n\ Gets\ the\ type.\n\n\ @return\ the\ type\n
+comment4.params=
+comment4.target=boolean\ isNavigable()
+comment4.text=\n\ Checks\ if\ is\ navigable.\n\n\ @return\ true,\ if\ is\ navigable\n
+comment5.params=
+comment5.target=java.lang.String\ toString()
+comment5.text=\n\ To\ string.\n\n\ @return\ the\ string\n
+numComments=6

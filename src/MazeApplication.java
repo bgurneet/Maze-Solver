@@ -20,36 +20,42 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import java.io.*;
+import javafx.scene.Node;
+import javafx.application.Platform;
 import maze.*;
 import maze.routing.*;
+import maze.visualisation.*;
 
 /**
-* MazeApplication.java - a javafx class for displaying the application as GUI to the user
-* @author Gurneet Bhatia
-* @version 1.0
-*/
+ * MazeApplication.java - a javafx class for displaying the application as GUI to the user
+ * @author Gurneet Bhatia
+ * @version 1.0
+ */
 public class MazeApplication extends Application{
-    
+
     /** The stage. */
     // the stage that is used through the application
     Stage stage = null;
-    
+
     /** the Pane on which the blocks of the maze are rendered */
     Pane canvas;
-    
+
+    Pane mainPane;
+
     /** the parts of the maze */
     public List<List<Rectangle>> blocks;
-    
+
     /** The RouteFinder object. */
     public RouteFinder rf;
-    
+
     /** The screen width (for the stage). */
     public int screenWidth = 600;
-    
+
     /** The screen height (for the stage). */
     public int screenHeight = 500;
-    
+
     /**
      * Start.
      *
@@ -58,14 +64,13 @@ public class MazeApplication extends Application{
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        stage = primaryStage;
         primaryStage.setTitle("Maze Application");
         primaryStage.setScene(getHomeScene());
+        stage = primaryStage;
         primaryStage.show();
 
     }
 
-    
     /**
      * Gets the menu bar - most of its features are common to all the scenes.
      *
@@ -74,8 +79,10 @@ public class MazeApplication extends Application{
      */
     public MenuBar getMenuBar(boolean disableControls) {
         MenuBar menuBar = new MenuBar();
-        
+        menuBar.setId("menuBar");
+
         Menu actionsMenu = new Menu("Maze Solvers");
+        actionsMenu.setId("MazeSolverMenu");
 
         MenuItem depth = new MenuItem("Depth First Algorithm");
         depth.setOnAction(new EventHandler<ActionEvent>() {
@@ -95,6 +102,7 @@ public class MazeApplication extends Application{
         actionsMenu.getItems().add(depth);
 
         Menu controlsMenu = new Menu("Controls");
+        controlsMenu.setId("ControlsMenu");
         MenuItem loadMap = new MenuItem("Load Map");
         loadMap.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -111,11 +119,11 @@ public class MazeApplication extends Application{
             });
         MenuItem saveRoute = new MenuItem("Save Route");
         saveRoute.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SaveRouteMIClicked();
-            }
-        });
+                @Override
+                public void handle(ActionEvent event) {
+                    SaveRouteMIClicked();
+                }
+            });
         controlsMenu.getItems().add(loadMap);
         controlsMenu.getItems().add(loadRoute);
         controlsMenu.getItems().add(saveRoute);
@@ -123,6 +131,7 @@ public class MazeApplication extends Application{
         if(disableControls) controlsMenu.setDisable(true);
 
         Menu helperMenu = new Menu("Help");
+        helperMenu.setId("HelperMenu");
         MenuItem legend = new MenuItem("Legend");
         legend.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -130,15 +139,7 @@ public class MazeApplication extends Application{
                     legendClicked();
                 }
             });
-        MenuItem instructions = new MenuItem("Instructions");
-        instructions.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    instructionsClicked();
-                }
-            });
         helperMenu.getItems().add(legend);
-        helperMenu.getItems().add(instructions);
 
         menuBar.getMenus().add(actionsMenu);
         menuBar.getMenus().add(controlsMenu);
@@ -188,6 +189,7 @@ public class MazeApplication extends Application{
         borderPane.setTop(menuBar);
         borderPane.setCenter(vbox);
 
+        mainPane = borderPane;
         Scene scene = new Scene(borderPane, screenWidth, screenHeight);
         scene.getStylesheets().add(getClass().getResource("BasicApplication.css").toExternalForm());
 
@@ -304,14 +306,8 @@ public class MazeApplication extends Application{
      * Legend MenuItemclicked.
      */
     public void legendClicked() {
-        System.out.println("Legend Clicked!");
-    }
-
-    /**
-     * Instructions MenuItem clicked.
-     */
-    public void instructionsClicked() {
-        System.out.println("Instructions Clicked!");
+        LegendDialog dialog = new LegendDialog();
+        dialog.showAndWait();
     }
 
     /**
@@ -478,7 +474,7 @@ public class MazeApplication extends Application{
             alert.showAndWait();
         }
     }
-    
+
     /**
      * Breadth first step button pressed.
      * Calls the RouteFinder.bestRouteStep() method to find out what happens next
