@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=InvalidMazeException
-comment0.text=\n\ The\ Class\ InvalidMazeException\ is\ the\ parent\ class\ of\ most\ of\ the\ exceptions\ I\ use\ in\ this\ project\n\ @author\ Gurneet\ Bhatia\n\ @version\ 1.0\n
-comment1.params=errorMessage
-comment1.target=InvalidMazeException(java.lang.String)
-comment1.text=\n\ Instantiates\ a\ new\ invalid\ maze\ exception.\n\n\ @param\ errorMessage\ the\ error\ message\n
-numComments=2

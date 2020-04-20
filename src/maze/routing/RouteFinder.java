@@ -27,7 +27,7 @@ public class RouteFinder implements java.io.Serializable{
     private boolean finished;
 
     /** The variable that denotes which maze solving algorithm is being used (true is depth first and false is breadth first). */
-    private boolean algorithmInUse = false;
+    private boolean algorithmInUse = true;
 
     /**
      * Instantiates a new route finder.

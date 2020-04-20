@@ -22,8 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import java.io.*;
-import javafx.scene.Node;
-import javafx.application.Platform;
 import maze.*;
 import maze.routing.*;
 import maze.visualisation.*;

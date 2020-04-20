@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=MultipleExitException
-comment0.text=\n\ The\ Class\ MultipleExitException.\n\ @author\ Gurneet\ Bhatia\n\ @version\ 1.0\n
-comment1.params=errorMessage
-comment1.target=MultipleExitException(java.lang.String)
-comment1.text=\n\ Instantiates\ a\ new\ multiple\ exit\ exception.\n\n\ @param\ errorMessage\ the\ error\ message\n
-numComments=2
