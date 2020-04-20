@@ -21,4 +21,4 @@ else
     echo "--------- ERROR ---------"
 fi
 
-java -jar junit-platform-console-standalone.jar --class-path ./bin --scan-class-path --fail-if-no-test
+java -jar junit-platform-console-standalone.jar --class-path ./bin --scan-class-path --fail-if-no-tests
