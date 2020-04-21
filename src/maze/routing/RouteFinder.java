@@ -48,7 +48,7 @@ public class RouteFinder implements java.io.Serializable{
     /**
      * sets the algorithm variable.
      *
-     * @return void
+     * @param b that denotes whether its depth first or breadth first
      */
     public void setAlgorithm(boolean b) {
         this.algorithmInUse = b;
@@ -94,6 +94,8 @@ public class RouteFinder implements java.io.Serializable{
      * Load.
      *
      * @param filename the filename
+     * @throws IOException when there is a problem in reading the serialised input stream
+     * @throws ClassNotFoundException usually when the compiled version of the serialised files differs from the actual
      * @return the route finder
      */
     public static RouteFinder load(String filename) throws IOException, ClassNotFoundException{
