@@ -38,12 +38,12 @@ public class MazeApplication extends Application{
     Stage stage = null;
 
     /** the Pane on which the blocks of the maze are rendered */
-    Pane canvas;
+    Canvas canvas;
 
     Pane mainPane;
 
     /** the parts of the maze */
-    public List<List<Rectangle>> blocks;
+    public List<List<Block>> blocks;
 
     /** The RouteFinder object. */
     public RouteFinder rf;
@@ -212,7 +212,7 @@ public class MazeApplication extends Application{
                 }
             });
 
-        canvas = new Pane();
+        canvas = new Canvas();
         canvas.setId("canvas");
 
         AnchorPane anchorPane = new AnchorPane();
@@ -253,7 +253,7 @@ public class MazeApplication extends Application{
             });
         //stepBtn.setId("stepBtn");
 
-        canvas = new Pane();
+        canvas = new Canvas();
         canvas.setId("canvas");
 
         AnchorPane anchorPane = new AnchorPane();
@@ -354,9 +354,9 @@ public class MazeApplication extends Application{
      */
     public void renderMaze() {
         // start by re-initialising the 2D list that represents the graphics of the maze
-        blocks = new ArrayList<List<Rectangle>>();
+        blocks = new ArrayList<List<Block>>();
         // and resetting the pane that the rectangle objects are rendered on
-        canvas.getChildren().clear();
+        canvas.clear();
         // since maze.maze has private access, call the relevant method to acces it
         Maze maze = rf.getMaze();
         String[] mazeStr = maze.toString().split("\n");
@@ -370,20 +370,20 @@ public class MazeApplication extends Application{
         stage.setHeight(screenHeight);
         for(int row=0;row<mazeStr.length;row++) {
             // each row consists of a list of rectangle object, so iterate over those too
-            List<Rectangle> currentRow = new ArrayList<Rectangle>();
+            List<Block> currentRow = new ArrayList<Block>();
             for(int col=0;col<mazeStr[row].length();col++) {
                 // use the getColour to find out what colour the rectangle at certain coordinates should be
                 // it depends on what character is held in the maze string at that index
                 Color colour = getColour(mazeStr[row].charAt(col));
-                // generate the rectangle object
-                Rectangle rectangle = new Rectangle(BlockWidth, BlockHeight,colour);
-                rectangle.setArcWidth(20);
-                rectangle.setArcHeight(20);
-                // place the rectangle on the canvas at the relevant coordinates
-                rectangle.relocate(col*BlockWidth, row*BlockHeight);
-                currentRow.add(rectangle);
-                // add the rectangle to the canvas to show to the user
-                canvas.getChildren().addAll(rectangle);
+                int arcWidth = 20;
+                int arcHeight = 20;
+                int posx = col*BlockWidth;
+                int posy = row*BlockHeight;
+                // generate the block object
+                Block block = new Block(BlockWidth, BlockHeight, colour, arcWidth, arcHeight, posx, posy);
+                currentRow.add(block);
+                // add the block to the canvas to show to the user
+                canvas.getChildren().addAll(block);
             }
             blocks.add(currentRow);
         }
