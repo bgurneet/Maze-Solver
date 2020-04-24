@@ -145,6 +145,8 @@ public class Maze implements java.io.Serializable{
             throw new NoExitException("No Exit found in Maze!");
         }
 
+        System.out.println(maze.tiles);
+
         return maze;
     }
 
@@ -260,9 +262,9 @@ public class Maze implements java.io.Serializable{
         if(getTileLocation(tile) == null){
             throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
         }
-        else if(tile == null) {
+        /*else if(tile == null) {
             throw new IllegalArgumentException("Illegal Access to Entrance Detected!");
-        }
+        }*/
         else if(this.getEntrance() == null) {
             this.entrance = tile;
         } else {
